@@ -2,27 +2,14 @@ import React from 'react';
 import { View, Button, StyleSheet } from 'react-native';
 import LogoComponent from './LogoComponent';
 
-
 export default function HomeScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <LogoComponent />
       <View style={styles.buttonContainer}>
         <Button
-          title="Sign In"
-          onPress={() => navigation.navigate('SignInScreen')} // Adjust as needed
-        />
-      </View>
-      <View style={styles.buttonContainer}>
-        <Button
-          title="Sign Up"
-          onPress={() => navigation.navigate('SignUpScreen')} // Adjust as needed
-        />
-      </View>
-      <View style={styles.buttonContainer}>
-        <Button
           title="Setup Gateway"
-          onPress={() => navigation.navigate('GateWayConfig')} // Adjust as needed
+          onPress={() => navigation.navigate('GateWayConfig')} // Ensure this navigates correctly
         />
       </View>
     </View>
