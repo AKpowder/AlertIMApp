@@ -21,8 +21,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/AlertWet-icon.png",
         "backgroundColor": "#ffffff"
-      }
-      
+      },
+      "package": "com.anonymous.AlertWet"
     },
     "web": {
       "favicon": "./assets/favicon.png"

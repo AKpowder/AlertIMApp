@@ -1,55 +1,55 @@
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { NavigationContainer } from '@react-navigation/native';
 
-// AWS Amplify imports
-import { Amplify } from 'aws-amplify';
-import awsExports from './src/aws-exports';
-import { Authenticator, useAuthenticator } from '@aws-amplify/ui-react-native';
-// Screen imports
 import HomeScreen from './screens/HomeScreen';
+import SignUpScreen from './screens/SignUpScreen';
+import SignInScreen from './screens/SignInScreen';
 import GateWayConfig from './screens/GateWayConfig';
+import ConfirmationScreen from './screens/ConfirmationScreen';
 
-// Configure Amplify
-// Amplify.configure(amplifyconfig);
+import { Amplify } from 'aws-amplify';
+import awsExports from './src/aws-exports'
+
 Amplify.configure(awsExports);
+
 
 const Stack = createStackNavigator();
 
-function AppContent() {
+function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen
-          name="Home"
-          component={HomeScreen}
+        <Stack.Screen 
+          name="Home" 
+          component={HomeScreen} 
           options={{
-            title: 'Welcome',
-            headerTitleAlign: 'center',
-          }}
+            title: 'Alert Wet', // Custom title for HomeScreen
+            headerTitleAlign: 'center', // Centers the title
+          }} 
         />
-        <Stack.Screen
+        <Stack.Screen 
+          name="SignUpScreen" 
+          component={SignUpScreen} 
+          options={{ title: 'Sign Up' }}  // Custom title for SignUpScreen
+        />
+        <Stack.Screen 
+          name="SignInScreen" 
+          component={SignInScreen} 
+          options={{ title: 'Sign In' }}  // Custom title for SignInScreen
+        />
+        <Stack.Screen 
           name="GateWayConfig"
-          component={GateWayConfig}
-          options={{ title: 'Setup Gateway' }}
+          component={GateWayConfig} 
+          options={{ title: 'Setup Gateway' }}  // Custom title for gateway setup
+        />
+        <Stack.Screen 
+          name="ConfirmationScreen" 
+          component={ConfirmationScreen} 
+          options={{ title: 'Confirm Sign Up' }} // Add your ConfirmationScreen to the navigator
         />
       </Stack.Navigator>
     </NavigationContainer>
-  );
-}
-function SignOutButton() {
-  const { signOut } = useAuthenticator();
-  return <Button title="Sign Out" onPress={signOut} />;
-}
-
-// Wrap your app's content with the Authenticator component
-function App() {
-  return (
-    <Authenticator.Provider>
-      <Authenticator loginMechanisms={['email']}>
-        <SignOutButton />
-      </Authenticator>
-    </Authenticator.Provider>
   );
 }
 

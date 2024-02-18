@@ -1,53 +1,58 @@
-import React from 'react';
-import { View, Button, StyleSheet, Linking } from 'react-native';
-import LogoComponent from './LogoComponent';
+import React, { useState } from 'react';
+import { View, TextInput, Button, Alert, StyleSheet } from 'react-native';
+import { signIn } from 'aws-amplify/auth';
 
-export default function SignInScreen({ navigation }) {
-  // Function to handle URL opening
-  const handlePress = async (url) => {
-    // Check if the URL can be opened
-    const supported = await Linking.canOpenURL(url);
-    if (supported) {
-      // Open the URL
-      await Linking.openURL(url);
-    } else {
-      console.error("Don't know how to open this URL: " + url);
+const SignInScreen = ({ navigation }) => {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+
+  async function handleSignIn() { 
+    try {
+      const { isSignedIn, nextStep } = await signIn({ username: 'test1', password:'Snowskate1!'});
+      console.log('Sign-in successful:', user);
+      navigation.navigate('HomeScreen');
+    } catch (error) {
+      console.error('Error signing in:', error);
+      Alert.alert('Sign-in Error', JSON.stringify(error, null, 2));
     }
-  };
+  }
+
 
   return (
     <View style={styles.container}>
-      <LogoComponent />
-      <View style={styles.buttonContainer}>
-        <Button
-          title="Enterprise"
-          onPress={() => handlePress('https://example.com')}
-        />
-      </View>
-      <View style={styles.buttonContainer}>
-        <Button
-          title="Home Care"
-          onPress={() => handlePress('https://example2.com')}
-        />
-      </View>
-      <View style={styles.buttonContainer}>
-        <Button
-          title="Demo"
-          onPress={() => handlePress('https://example3.com')}
-        />
-      </View>
+      <TextInput
+        value={username}
+        onChangeText={setUsername}
+        placeholder="Username"
+        autoCapitalize="none"
+        style={styles.input}
+      />
+      <TextInput
+        value={password}
+        onChangeText={setPassword}
+        placeholder="Password"
+        autoCapitalize="none"
+        secureTextEntry
+        style={styles.input}
+      />
+      <Button title="Sign In" onPress={handleSignIn} />
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
+    padding: 16,
   },
-  buttonContainer: {
-    width: '75%', // Make buttons take up 75% of the page width
-    marginVertical: 10, // Add some vertical spacing between buttons
+  input: {
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    marginBottom: 20,
+    padding: 10,
   },
 });
+
+export default SignInScreen;
