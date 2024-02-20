@@ -27,6 +27,12 @@ export default function HomeScreen({ navigation }) {
           onPress={() => navigation.navigate('GateWayConfig')} // Adjust as needed
         />
       </View>
+      <View style={styles.buttonContainer}>
+        <Button
+          title="NotificationTest"
+          onPress={() => navigation.navigate('NotificationTest')} // Adjust as needed
+        />
+      </View>
     </View>
   );
 }
