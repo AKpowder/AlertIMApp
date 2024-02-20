@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, TextInput, Button, Alert, StyleSheet } from 'react-native';
 import { signIn } from 'aws-amplify/auth';
+import SignOutButton from '../Components/SignOutButton';
 
 const SignInScreen = ({ navigation }) => {
   const [username, setUsername] = useState('');
@@ -8,9 +9,9 @@ const SignInScreen = ({ navigation }) => {
 
   async function handleSignIn() { 
     try {
-      const { isSignedIn, nextStep } = await signIn({ username: 'test1', password:'Snowskate1!'});
-      console.log('Sign-in successful:', user);
-      navigation.navigate('HomeScreen');
+      const { isSignedIn, nextStep } = await signIn({ username, password});
+      console.log('Sign-in successful:', username);
+      navigation.navigate('GateWayConfig');
     } catch (error) {
       console.error('Error signing in:', error);
       Alert.alert('Sign-in Error', JSON.stringify(error, null, 2));
@@ -36,6 +37,8 @@ const SignInScreen = ({ navigation }) => {
         style={styles.input}
       />
       <Button title="Sign In" onPress={handleSignIn} />
+      <SignOutButton />
+      
     </View>
   );
 };

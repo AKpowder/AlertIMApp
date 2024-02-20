@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { SafeAreaView, StyleSheet, View, ActivityIndicator, Text } from 'react-native';
 import { WebView } from 'react-native-webview';
+import CurrentAppUser from '../Components/CurrentUser';
 
 const GateWayConfig = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -17,6 +18,7 @@ const GateWayConfig = () => {
 
   return (
     <SafeAreaView style={styles.flexContainer}>
+      <CurrentAppUser/>
       <View style={styles.headerContainer}>
         <Text style={styles.headerText}>Gateway Configuration</Text>
       </View>
@@ -31,7 +33,7 @@ const GateWayConfig = () => {
         javaScriptEnabled={true}
         domStorageEnabled={true}
         startInLoadingState={true}
-        source={{ uri: 'http://192.168.1.1' }}
+        source={{ uri: 'google.com' }}
         style={styles.webViewContainer}
         onLoad={() => setIsLoading(false)}
         onLoadStart={() => setIsLoading(true)}

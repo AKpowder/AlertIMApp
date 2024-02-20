@@ -1,11 +1,13 @@
-import React from 'react';
-import { View, Button, StyleSheet } from 'react-native';
-import LogoComponent from './LogoComponent';
+import React, { useState, useEffect } from 'react';
+import { View, Button, StyleSheet, Text } from 'react-native';
+import LogoComponent from '../Components/LogoComponent';
+import CurrentAppUser from '../Components/CurrentUser';
 
 
 export default function HomeScreen({ navigation }) {
   return (
-    <View style={styles.container}>
+    <View style={styles.container}> 
+      <CurrentAppUser/>
       <LogoComponent />
       <View style={styles.buttonContainer}>
         <Button
@@ -38,5 +40,5 @@ const styles = StyleSheet.create({
   buttonContainer: {
     width: '75%', // Make buttons take up 75% of the page width
     marginVertical: 10, // Add some vertical spacing between buttons
-  },
+  }
 });

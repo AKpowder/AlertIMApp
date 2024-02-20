@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, Alert, StyleSheet } from 'react-native';
+import { View, TextInput, Button, Alert, StyleSheet,KeyboardAvoidingView, Platform, } from 'react-native';
 import { signUp } from 'aws-amplify/auth';
+import LogoComponent from '../Components/LogoComponent';
 
 const SignUpScreen = ({ navigation }) => {
   const [username, setUsername] = useState('');
@@ -18,8 +19,8 @@ const SignUpScreen = ({ navigation }) => {
         password,
         options: {
           userAttributes: {
-            custom:phoneNumber,
-            custom:clipNumber,
+            'custom:Clip-Number': clipNumber,
+            'custom:Phone-Number': phoneNumber,
             email, // user's email
             name: name, // Add the user's full name here
             address: address // Add the user's address here
@@ -39,72 +40,45 @@ const SignUpScreen = ({ navigation }) => {
   
 
   return (
-    <View style={styles.container}>
-      <TextInput
-        value={name}
-        onChangeText={setName}
-        placeholder="Full Name"
-        autoCapitalize="none"
-        style={styles.input}
-      />
-      <TextInput
-        value={username}
-        onChangeText={setUsername}
-        placeholder="Username"
-        autoCapitalize="none"
-        style={styles.input}
-      />
-      <TextInput
-        value={password}
-        onChangeText={setPassword}
-        placeholder="Password"
-        autoCapitalize="none"
-        secureTextEntry
-        style={styles.input}
-      />
-      <TextInput
-        value={email}
-        onChangeText={setEmail}
-        placeholder="Email"
-        keyboardType="email-address"
-        style={styles.input}
-      />
-      <TextInput
-        value={phoneNumber}
-        onChangeText={setPhoneNumber}
-        placeholder="Phone Number"
-        keyboardType="phone-pad"
-        style={styles.input}
-      />
-      <TextInput
-        value={address}
-        onChangeText={setAddress}
-        placeholder="Address"
-        style={styles.input}
-      />
-      <TextInput
-        value={clipNumber}
-        onChangeText={setClipNumber}
-        placeholder="Clip Number"
-        style={styles.input}
-      />
-      <Button title="Sign Up" onPress={handleSignUp} />
-    </View>
+    <KeyboardAvoidingView 
+      style={{ flex: 1 }} // Ensures KeyboardAvoidingView takes the whole screen
+      behavior={Platform.OS === "ios" ? "padding" : "height"} // Adjust behavior based on platform
+      keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0} // Adjust vertical offset for iOS
+    >
+      <View style={styles.container}>
+        <LogoComponent />
+        <TextInput value={name} onChangeText={setName} placeholder="Full Name" autoCapitalize="none" style={styles.input} />
+        <TextInput value={username} onChangeText={setUsername} placeholder="Username" autoCapitalize="none" style={styles.input} />
+        <TextInput value={password} onChangeText={setPassword} placeholder="Password" autoCapitalize="none" secureTextEntry style={styles.input} />
+        <TextInput value={email} onChangeText={setEmail} placeholder="Email" keyboardType="email-address" style={styles.input} />
+        <TextInput value={phoneNumber} onChangeText={setPhoneNumber} placeholder="Phone Number" keyboardType="phone-pad" style={styles.input} />
+        <TextInput value={address} onChangeText={setAddress} placeholder="Address" style={styles.input} />
+        <TextInput value={clipNumber} onChangeText={setClipNumber} placeholder="Clip Number" style={styles.input} />
+        <Button title="Sign Up" onPress={handleSignUp} />
+      </View>
+    </KeyboardAvoidingView>
   );
 };
 
+// Styles updated based on the old file
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    alignItems: 'center',
     justifyContent: 'center',
-    padding: 16,
+    padding: 20, 
   },
   input: {
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    marginBottom: 20,
-    padding: 10,
+    width: '100%', 
+    marginBottom: 15, 
+    borderWidth: 1, 
+    borderColor: '#ccc', 
+    borderRadius: 5, 
+    padding: 10, 
+  },
+  // Add errorInput style for future validation error visuals
+  errorInput: {
+    borderColor: 'red', 
   },
 });
 

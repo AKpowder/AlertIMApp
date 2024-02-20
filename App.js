@@ -24,7 +24,7 @@ function App() {
           name="Home" 
           component={HomeScreen} 
           options={{
-            title: 'Alert Wet', // Custom title for HomeScreen
+            title: 'AlertWet', // Custom title for HomeScreen
             headerTitleAlign: 'center', // Centers the title
           }} 
         />
