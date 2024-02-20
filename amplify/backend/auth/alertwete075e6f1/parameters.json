@@ -1,0 +1,28 @@
+{
+  "authSelections": "userPoolOnly",
+  "resourceName": "alertwete075e6f1",
+  "serviceType": "imported",
+  "region": "us-east-1",
+  "aliasAttributes": [
+    "email",
+    "phone_number"
+  ],
+  "authProvidersUserPool": [],
+  "requiredAttributes": [
+    "address",
+    "email",
+    "name"
+  ],
+  "passwordPolicyMinLength": 8,
+  "passwordPolicyCharacters": [
+    "Requires Lowercase",
+    "Requires Uppercase",
+    "Requires Numbers",
+    "Requires Symbols"
+  ],
+  "mfaConfiguration": "OFF",
+  "autoVerifiedAttributes": [
+    "email"
+  ],
+  "mfaTypes": []
+}

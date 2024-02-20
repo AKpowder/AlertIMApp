@@ -1,0 +1,25 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-alertwet-dev-122326-authRole",
+      "UnauthRoleArn": "arn:aws:iam::581867243334:role/amplify-alertwet-dev-122326-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::581867243334:role/amplify-alertwet-dev-122326-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-alertwet-dev-122326-deployment",
+      "UnauthRoleName": "amplify-alertwet-dev-122326-unauthRole",
+      "StackName": "amplify-alertwet-dev-122326",
+      "StackId": "arn:aws:cloudformation:us-east-1:581867243334:stack/amplify-alertwet-dev-122326/43721d60-cdb9-11ee-9c9b-1240b53e681d",
+      "AmplifyAppId": "d2z9db748ao6cw"
+    },
+    "categories": {
+      "auth": {
+        "alertwete075e6f1": {
+          "userPoolId": "us-east-1_JBG1rwzfr",
+          "userPoolName": "AlertWet",
+          "webClientId": "75q4tnhufvmh1do44gtnq7stof",
+          "nativeClientId": "75q4tnhufvmh1do44gtnq7stof"
+        }
+      }
+    }
+  }
+}
