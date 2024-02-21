@@ -22,8 +22,27 @@ const NotificationTestScreen = () => {
     }
     const token = (await Notifications.getExpoPushTokenAsync()).data;
     console.log(token);
+  
+    // Send the token to your server.
+    fetch('https://your-server.com/api/tokens', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        token: token,
+        // userId: 'user123',
+      }),
+    })
+    .then(response => response.json())
+    .then(data => console.log('Token registered with server:', data))
+    .catch((error) => {
+      console.error('Error registering token with server:', error);
+    });
+  
     return token;
   }
+  
 
   // Dummy function to illustrate where you'd trigger a notification.
   // This would need to be connected to a backend or use a tool like Expo's notification tool.
