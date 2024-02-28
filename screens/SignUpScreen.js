@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, TextInput, Button, Alert, StyleSheet,KeyboardAvoidingView, Platform, } from 'react-native';
-import { signUp } from 'aws-amplify/auth';
+import { Auth} from 'aws-amplify';
 import LogoComponent from '../Components/LogoComponent';
 
 const SignUpScreen = ({ navigation }) => {
@@ -14,7 +14,7 @@ const SignUpScreen = ({ navigation }) => {
 
   async function handleSignUp() {
     try {
-      const { user } = await signUp({
+      const { user } = await Auth.signUp({
         username,
         password,
         options: {

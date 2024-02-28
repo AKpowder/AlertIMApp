@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, TextInput, Button, Alert, StyleSheet } from 'react-native';
-import { signIn } from 'aws-amplify/auth';
+import { Auth } from 'aws-amplify';
 import SignOutButton from '../Components/SignOutButton';
 
 const SignInScreen = ({ navigation }) => {
@@ -9,14 +9,17 @@ const SignInScreen = ({ navigation }) => {
 
   async function handleSignIn() { 
     try {
-      const { isSignedIn, nextStep } = await signIn({ username, password});
-      console.log('Sign-in successful:', username);
+      const user = await Auth.signIn(username, password);
+      console.log('Sign-in successful:', user);
+      // Use the navigation to go to the next screen
+      // Pass any required parameters to the next screen, if necessary
       navigation.navigate('GateWayConfig');
     } catch (error) {
       console.error('Error signing in:', error);
-      Alert.alert('Sign-in Error', JSON.stringify(error, null, 2));
+      Alert.alert('Sign-in Error', error.message || JSON.stringify(error, null, 2));
     }
   }
+  
 
 
   return (
