@@ -19,6 +19,15 @@
           "webClientId": "75q4tnhufvmh1do44gtnq7stof",
           "nativeClientId": "75q4tnhufvmh1do44gtnq7stof"
         }
+      },
+      "function": {
+        "alertwetf8f413b9": {
+          "deploymentBucketName": "amplify-alertwet-dev-122326-deployment",
+          "s3Key": "amplify-builds/alertwetf8f413b9-34593347573052763631-build.zip"
+        }
+      },
+      "api": {
+        "AlertWetRest": {}
       }
     }
   }
