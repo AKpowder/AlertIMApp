@@ -1,4 +1,20 @@
 {
+  "api": {
+    "AlertWetRest": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "alertwetf8f413b9"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway"
+    }
+  },
   "auth": {
     "alertwete075e6f1": {
       "customAuth": false,
@@ -6,6 +22,14 @@
       "providerPlugin": "awscloudformation",
       "service": "Cognito",
       "serviceType": "imported"
+    }
+  },
+  "function": {
+    "alertwetf8f413b9": {
+      "build": true,
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
     }
   },
   "parameters": {
@@ -38,6 +62,22 @@
         {
           "category": "auth",
           "resourceName": "alertwete075e6f1"
+        }
+      ]
+    },
+    "AMPLIFY_function_alertwetf8f413b9_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "alertwetf8f413b9"
+        }
+      ]
+    },
+    "AMPLIFY_function_alertwetf8f413b9_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "alertwetf8f413b9"
         }
       ]
     }
