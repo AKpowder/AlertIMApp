@@ -1,11 +1,11 @@
 import React from 'react';
-import { Auth } from 'aws-amplify';
+import { signOut } from 'aws-amplify/auth';
 import { Button } from 'react-native';
 
 const SignOutButton = () => {
   const handleSignOut = async () => {
     try {
-      await Auth.signOut({ global: true });
+      await signOut({ global: true });
       console.log('Signed out successfully');
     } catch (error) {
       console.error('Error signing out: ', error);

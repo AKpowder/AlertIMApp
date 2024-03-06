@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Text } from 'react-native';
-import { Auth } from 'aws-amplify';
+import { fetchUserAttributes } from 'aws-amplify/auth';
 
 const CurrentAppUser = () => {
   const [username, setUsername] = useState('');
@@ -8,8 +8,8 @@ const CurrentAppUser = () => {
   useEffect(() => {
     async function getCurrentUser() {
       try {
-        const userInfo = await Auth.currentAuthenticatedUser();
-        setUsername(userInfo.username);
+        const userInfo = await fetchUserAttributes();
+        setUsername(userInfo.name);
       } catch (error) {
         console.log('error getting user info:', error);
       }

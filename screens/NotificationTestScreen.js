@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Button, StyleSheet, Alert } from 'react-native';
 import * as Notifications from 'expo-notifications';
+import CurrentAppUser from '../Components/CurrentUser';
 
 const NotificationTestScreen = () => {
   const [expoPushToken, setExpoPushToken] = useState('');
@@ -55,6 +56,7 @@ const NotificationTestScreen = () => {
 
   return (
     <View style={styles.container}>
+      <CurrentAppUser/>
       <Text style={styles.title}>Push Notification Test</Text>
       <Text style={styles.tokenLabel}>Expo Push Token:</Text>
       <Text selectable style={styles.token}>{expoPushToken}</Text>
