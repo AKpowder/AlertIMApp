@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, TextInput, Button, Alert, StyleSheet } from 'react-native';
-import { Auth } from 'aws-amplify';
+import { signIn } from 'aws-amplify/auth';
 import SignOutButton from '../Components/SignOutButton';
 
 const SignInScreen = ({ navigation }) => {
