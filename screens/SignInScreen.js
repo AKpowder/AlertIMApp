@@ -9,7 +9,7 @@ const SignInScreen = ({ navigation }) => {
 
   async function handleSignIn() { 
     try {
-      const user = await Auth.signIn(username, password);
+      const user = await signIn({username, password});
       console.log('Sign-in successful:', user);
       // Use the navigation to go to the next screen
       // Pass any required parameters to the next screen, if necessary
