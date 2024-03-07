@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, TextInput, Button, Alert, StyleSheet } from 'react-native';
-import { Auth } from 'aws-amplify';
+import { confirmSignUp } from 'aws-amplify/auth';
 
 const ConfirmationScreen = ({ navigation, route }) => {
   const [confirmationCode, setConfirmationCode] = useState('');
@@ -9,7 +9,7 @@ const ConfirmationScreen = ({ navigation, route }) => {
   
   async function handleConfirmation() {
     try {
-      await Auth.confirmSignUp({username, confirmationCode});
+      await confirmSignUp({username, confirmationCode});
       Alert.alert('Confirmation successful!');
       navigation.navigate('SignInScreen'); // Navigate to sign-in screen upon successful confirmation
     } catch (error) {
