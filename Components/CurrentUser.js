@@ -1,48 +1,58 @@
+// Add any necessary imports for icons or images
 import React, { useState, useEffect } from 'react';
-import { Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { fetchUserAttributes } from 'aws-amplify/auth';
 import { useNavigation } from '@react-navigation/native';
+import ProfileIcon from '../assets/Profile_Picture.png'
 
 const CurrentAppUser = () => {
   const [username, setUsername] = useState('');
-  const navigation = useNavigation(); // Hook for navigation
+  const navigation = useNavigation();
 
   useEffect(() => {
     async function getCurrentUser() {
       try {
-        // Assuming userInfo.name exists. Please adjust according to your user data structure
         const userInfo = await fetchUserAttributes();
-        setUsername(userInfo.name);
+        setUsername(userInfo.name); // Adjust according to your attribute keys
       } catch (error) {
-        console.log('error getting user info:', error);
+        console.log('Error getting user info:', error);
       }
     }
     getCurrentUser();
   }, []);
 
-  // Function to navigate to ProfileScreen
-  const goToProfile = () => {
-    navigation.navigate('ProfileScreen'); // Adjust 'ProfileScreen' as needed
-  };
-
   return (
-    <TouchableOpacity style={styles.userButton} onPress={goToProfile}>
-      <Text style={styles.userText}>Logged in as: {username}</Text>
+    <TouchableOpacity style={styles.userButton} onPress={() => navigation.navigate('ProfileScreen')}>
+      <Image
+        source={ProfileIcon} // Replace with user's actual image or a default icon
+        style={styles.avatar}
+        resizeMode="contain"
+      />
+      <Text style={styles.username}>{username}</Text>
     </TouchableOpacity>
   );
 };
 
-// Styles for positioning and appearance
 const styles = StyleSheet.create({
   userButton: {
-    position: 'absolute', // Absolute positioning to place it on top of other content
-    top: 10, // Adjust top and right as needed for your layout
+    flexDirection: 'row',
+    alignItems: 'center',
+    position: 'absolute',
+    top: 10,
     right: 10,
-    backgroundColor: 'transparent', // Or any other background color
-    padding: 10, // Adjust padding as needed
+    backgroundColor: 'rgba(255,255,255,0.8)', // Semi-transparent white background
+    borderRadius: 20,
+    padding: 8,
   },
-  userText: {
-    color: 'blue', // Adjust text color and other properties as needed
+  avatar: {
+    width: 30,
+    height: 30,
+    borderRadius: 15, // Makes it circular
+    marginRight: 8,
+  },
+  username: {
+    color: '#333', // Dark text color for contrast
+    fontWeight: 'bold',
   },
 });
 

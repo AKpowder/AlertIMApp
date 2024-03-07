@@ -11,6 +11,7 @@ import ConfirmationScreen from './screens/ConfirmationScreen';
 import NotificationTestScreen from './screens/NotificationTestScreen'; // Import NotificationTestScreen
 import HomeScreen from './screens/HomeScreen';
 import ProfileScreen from './screens/ProfileScreen'
+import ChangeEmailScreen from './screens/ChangeEmailScreen'
 
 import { Amplify } from 'aws-amplify';
 import awsExports from './src/aws-exports';
@@ -68,6 +69,11 @@ function App() {
           name="ProfileScreen" // Define the route name
           component={ProfileScreen} 
           options={{ title: 'Profile' }} // Set the options such as the title
+        />
+        <Stack.Screen 
+          name="ChangeEmailScreen" // Define the route name
+          component={ChangeEmailScreen} 
+          options={{ title: 'Change Email' }} // Set the options such as the title
         />
       </Stack.Navigator>
     </NavigationContainer>

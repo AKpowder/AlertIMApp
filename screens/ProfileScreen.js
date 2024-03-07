@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, TextInput, Button, StyleSheet, ScrollView, Alert } from 'react-native';
+import { View, TextInput, Button, StyleSheet, ScrollView, Alert, KeyboardAvoidingView, Platform } from 'react-native';
 import { fetchUserAttributes, updateUserAttributes } from 'aws-amplify/auth';
 import LogoComponent from '../Components/LogoComponent';
 
@@ -16,7 +16,6 @@ const ProfileScreen = ({ navigation }) => {
       try {
         // In real implementation, replace with actual fetching logic
         const userInfo = await fetchUserAttributes();
-        console.log(userInfo);
         setName(userInfo.name);
         setEmail(userInfo.email);
         setPhoneNumber(userInfo['custom:Phone-Number']); // Adjust according to the actual attribute key
@@ -61,17 +60,31 @@ const ProfileScreen = ({ navigation }) => {
   
 
   return (
-    <ScrollView style={{ flex: 1 }}>
-      <View style={styles.container}>
-        <LogoComponent />
-        <TextInput value={name} onChangeText={setName} placeholder="Full Name" autoCapitalize="none" style={styles.input} />
-        <TextInput value={email} onChangeText={setEmail} placeholder="Email" keyboardType="email-address" style={styles.input} />
-        <TextInput value={phoneNumber} onChangeText={setPhoneNumber} placeholder="Phone Number" keyboardType="phone-pad" style={styles.input} />
-        <TextInput value={address} onChangeText={setAddress} placeholder="Address" style={styles.input} />
-        <TextInput value={clipNumber} onChangeText={setClipNumber} placeholder="Clip Number" style={styles.input} />
-        <Button title="Update Profile" onPress={handleUpdateProfile} />
-      </View>
-    </ScrollView>
+    <KeyboardAvoidingView 
+      style={{ flex: 1 }}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}
+    >
+        <ScrollView style={{ flex: 1 }}>
+        <View style={styles.container}>
+            <LogoComponent />
+            <TextInput value={name} onChangeText={setName} placeholder="Full Name" autoCapitalize="none" style={styles.input} />
+            <TextInput value={email} editable={false} placeholder="Email" style={[styles.input, styles.nonEditableInput]} />
+            <TextInput value={phoneNumber} onChangeText={setPhoneNumber} placeholder="Phone Number" keyboardType="phone-pad" style={styles.input} />
+            <TextInput value={address} onChangeText={setAddress} placeholder="Address" style={styles.input} />
+            <TextInput value={clipNumber} onChangeText={setClipNumber} placeholder="Clip Number" style={styles.input} />
+            
+            <View style={styles.buttonContainer}>
+                <Button title="Update Profile" onPress={handleUpdateProfile} />
+            </View>
+
+            {/* <View style={styles.buttonContainer}>
+                <Button title="Change Email" onPress={() => navigation.navigate('ChangeEmailScreen')} />
+            </View> */}
+            
+        </View>
+        </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -93,6 +106,13 @@ const styles = StyleSheet.create({
   errorInput: {
     borderColor: 'red',
   },
+  nonEditableInput: {
+    backgroundColor: '#f3f3f3', // or any color that indicates non-editability
+  },
+  buttonContainer: {
+    width: '75%',
+    marginVertical: 10,
+  }, 
 });
 
 export default ProfileScreen;
