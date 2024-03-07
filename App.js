@@ -3,12 +3,14 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 
-import HomeScreen from './screens/HomeScreen';
+import LandingScreen from './screens/LandingScreen';
 import SignUpScreen from './screens/SignUpScreen';
 import SignInScreen from './screens/SignInScreen';
 import GateWayConfig from './screens/GateWayConfig';
 import ConfirmationScreen from './screens/ConfirmationScreen';
 import NotificationTestScreen from './screens/NotificationTestScreen'; // Import NotificationTestScreen
+import HomeScreen from './screens/HomeScreen';
+import ProfileScreen from './screens/ProfileScreen'
 
 import { Amplify } from 'aws-amplify';
 import awsExports from './src/aws-exports';
@@ -22,8 +24,16 @@ function App() {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen 
-          name="Home" 
-          component={HomeScreen} 
+          name="LandingScreen" 
+          component={LandingScreen} 
+          options={{
+            title: 'AlertWet',
+            headerTitleAlign: 'center',
+          }} 
+        />
+        <Stack.Screen 
+          name="HomeScreen" 
+          component={HomeScreen}
           options={{
             title: 'AlertWet',
             headerTitleAlign: 'center',
@@ -53,6 +63,11 @@ function App() {
           name="NotificationTest" // Define the route name
           component={NotificationTestScreen} 
           options={{ title: 'Test Notifications' }} // Set the options such as the title
+        />
+        <Stack.Screen 
+          name="ProfileScreen" // Define the route name
+          component={ProfileScreen} 
+          options={{ title: 'Profile' }} // Set the options such as the title
         />
       </Stack.Navigator>
     </NavigationContainer>
