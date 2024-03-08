@@ -34,7 +34,7 @@ export default function SignUpScreen({ navigation }) {
           <View style={styles.input}>
             <Picker selectedValue={selectedItem} onValueChange={setSelectedItem} style={{width: '100%', height: 50}}>
               <Picker.Item label="Enterprise" value="Enterprise" />
-              <Picker.Item label="Home Care" value="HomeCare" />
+              <Picker.Item label="LandingScreen Care" value="HomeCare" />
               <Picker.Item label="Dev" value="Dev" />
             </Picker>
           </View>

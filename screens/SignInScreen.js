@@ -1,34 +1,33 @@
 import React, { useState } from 'react';
 import { View, TextInput, Button, Alert, StyleSheet } from 'react-native';
 import { signIn } from 'aws-amplify/auth';
-import SignOutButton from '../Components/SignOutButton';
 
 const SignInScreen = ({ navigation }) => {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   async function handleSignIn() { 
     try {
-      const user = await signIn({username, password});
+      const user = await signIn({username: email, password}); // Use email as the username for sign-in
       console.log('Sign-in successful:', user);
-      // Use the navigation to go to the next screen
-      // Pass any required parameters to the next screen, if necessary
-      navigation.navigate('GateWayConfig');
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'HomeScreen' }],
+      });
     } catch (error) {
       console.error('Error signing in:', error);
       Alert.alert('Sign-in Error', error.message || JSON.stringify(error, null, 2));
     }
   }
-  
-
 
   return (
     <View style={styles.container}>
       <TextInput
-        value={username}
-        onChangeText={setUsername}
-        placeholder="Username"
+        value={email}
+        onChangeText={setEmail}
+        placeholder="Email"
         autoCapitalize="none"
+        keyboardType="email-address"
         style={styles.input}
       />
       <TextInput
@@ -39,9 +38,18 @@ const SignInScreen = ({ navigation }) => {
         secureTextEntry
         style={styles.input}
       />
-      <Button title="Sign In" onPress={handleSignIn} />
-      <SignOutButton />
-      
+      <View style={styles.buttonContainer}>
+        <Button
+          title="Sign In"
+          onPress={handleSignIn}
+        />
+      </View>
+      <View style={styles.buttonContainer}>
+        <Button
+          title="Sign Up"
+          onPress={() => navigation.navigate('SignUpScreen')}
+        />
+      </View>
     </View>
   );
 };
@@ -49,15 +57,21 @@ const SignInScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    alignItems: 'center',
     justifyContent: 'center',
-    padding: 16,
+    padding: 20, 
   },
   input: {
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    marginBottom: 20,
-    padding: 10,
+    width: '100%', 
+    marginBottom: 15, 
+    borderWidth: 1, 
+    borderColor: '#ccc', 
+    borderRadius: 5, 
+    padding: 10, 
+  },
+  buttonContainer: {
+    width: '75%',
+    marginVertical: 10,
   },
 });
 

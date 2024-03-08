@@ -1,38 +1,30 @@
-import React, { useState, useEffect } from 'react';
-import { View, Button, StyleSheet, Text } from 'react-native';
+import React from 'react';
+import { View, Button, StyleSheet } from 'react-native';
 import LogoComponent from '../Components/LogoComponent';
 import CurrentAppUser from '../Components/CurrentUser';
-
+import SignOutButton from '../Components/SignOutButton'; 
 
 export default function HomeScreen({ navigation }) {
   return (
-    <View style={styles.container}> 
-      <CurrentAppUser/>
-      <LogoComponent />
-      <View style={styles.buttonContainer}>
-        <Button
-          title="Sign In"
-          onPress={() => navigation.navigate('SignInScreen')} // Adjust as needed
-        />
-      </View>
-      <View style={styles.buttonContainer}>
-        <Button
-          title="Sign Up"
-          onPress={() => navigation.navigate('SignUpScreen')} // Adjust as needed
-        />
-      </View>
+    <View style={styles.container}>
+      <CurrentAppUser/>  
+      <LogoComponent />  
       <View style={styles.buttonContainer}>
         <Button
           title="Setup Gateway"
-          onPress={() => navigation.navigate('GateWayConfig')} // Adjust as needed
+          onPress={() => navigation.navigate('GateWayConfig')}
         />
       </View>
       <View style={styles.buttonContainer}>
         <Button
           title="NotificationTest"
-          onPress={() => navigation.navigate('NotificationTest')} // Adjust as needed
+          onPress={() => navigation.navigate('NotificationTest')}
         />
       </View>
+      <View style={styles.buttonContainer}>
+        <SignOutButton/>
+      </View>
+      
     </View>
   );
 }
