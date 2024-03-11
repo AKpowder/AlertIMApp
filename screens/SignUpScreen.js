@@ -3,6 +3,7 @@ import { View, TextInput, Button, Alert, StyleSheet,KeyboardAvoidingView, Platfo
 import { signUp } from 'aws-amplify/auth';
 import LogoComponent from '../Components/LogoComponent';
 
+
 const SignUpScreen = ({ navigation }) => {
   const [username, setUsername] = useState('');
   const [name, setName] = useState('');
