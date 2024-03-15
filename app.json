@@ -6,6 +6,7 @@
     "orientation": "portrait",
     "icon": "./assets/AlertWet-icon.png",
     "userInterfaceStyle": "light",
+    "projectId": "12345678-1234-1234-1234-1234567890ab",
     "splash": {
       "image": "./assets/AlertWet-icon.png",
       "resizeMode": "contain",

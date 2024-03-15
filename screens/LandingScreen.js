@@ -36,6 +36,12 @@ export default function LandingScreen({ navigation }) {
           onPress={() => navigation.navigate('SignUpScreen')}
         />
       </View>
+      <View style={styles.buttonContainer}>
+        <Button
+          title="NotificationTest"
+          onPress={() => navigation.navigate('NotificationTest')}
+        />
+      </View>
     </View>
   );
 }
