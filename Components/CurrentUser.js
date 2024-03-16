@@ -24,7 +24,7 @@ const CurrentAppUser = () => {
   return (
     <TouchableOpacity style={styles.userButton} onPress={() => navigation.navigate('ProfileScreen')}>
       <Image
-        source={ProfileIcon} // Replace with user's actual image or a default icon
+        source={ProfileIcon} 
         style={styles.avatar}
         resizeMode="contain"
       />

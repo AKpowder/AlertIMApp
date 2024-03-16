@@ -1,11 +1,12 @@
 {
   "expo": {
     "name": "AlertWet",
-    "slug": "AlertWet",
+    "slug": "alertwet",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/AlertWet-icon.png",
     "userInterfaceStyle": "light",
+    "projectId": "12e14139-6d43-4572-b4f1-fcab1ee23e81",
     "splash": {
       "image": "./assets/AlertWet-icon.png",
       "resizeMode": "contain",
@@ -26,6 +27,12 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "12e14139-6d43-4572-b4f1-fcab1ee23e81"
+      }
+    },
+    "owner": "chrisgray"
   }
 }

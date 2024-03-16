@@ -1,62 +1,105 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Button, StyleSheet, Alert } from 'react-native';
+import { View, Text, Button, StyleSheet, Alert, Platform } from 'react-native';
 import * as Notifications from 'expo-notifications';
+import * as Device from 'expo-device'; // Ensure this is imported
 import CurrentAppUser from '../Components/CurrentUser';
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
 
 const NotificationTestScreen = () => {
   const [expoPushToken, setExpoPushToken] = useState('');
 
   useEffect(() => {
-    registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
+    registerForPushNotificationsAsync().then(token => {
+      if (token) {
+        setExpoPushToken(token);
+        console.log(`Token set in state: ${token}`);
+      } else {
+        console.log('No token received after permissions granted.');
+      }
+    });
   }, []);
 
   async function registerForPushNotificationsAsync() {
+    console.log('Requesting notification permissions...');
     const { status: existingStatus } = await Notifications.getPermissionsAsync();
+    console.log(`Existing permission status: ${existingStatus}`);
     let finalStatus = existingStatus;
     if (existingStatus !== 'granted') {
       const { status } = await Notifications.requestPermissionsAsync();
       finalStatus = status;
+      console.log(`New permission status: ${finalStatus}`);
     }
-    if (finalStatus !== 'granted') {
-      Alert.alert('Failed to get push token for push notification!');
+    if (finalStatus === 'granted' && Device.isDevice) {
+      try {
+        const tokenResponse = await Notifications.getExpoPushTokenAsync();
+        const token = tokenResponse.data;
+        console.log("Here is the token: " + token);
+
+        // Send the token to your server for registration.
+        fetch('https://ga9ek43t9c.execute-api.us-east-1.amazonaws.com/dev/register-token', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            token: token,
+            userEmail: CurrentAppUser.email,
+          }),
+        })
+        .then(response => response.json())
+        .then(data => console.log('Token registered with server:', data))
+        .catch((error) => {
+          console.error('Error registering token with server:', error);
+        });
+
+        return token;
+      } catch (error) {
+        console.error('Error fetching push token', error);
+        Alert.alert('Error', 'Failed to get push token!');
+      }
+    } else {
+      Alert.alert('Notification Permissions', 'Failed to get push token for push notification or not on real device!');
+    }
+  }
+
+  const sendTestNotification = async () => {
+    console.log(`Sending notification with token: ${expoPushToken}`);
+    if (!expoPushToken) {
+      console.error('No Expo Push Token available to send notification.');
+      Alert.alert('Token Error', 'No Expo Push Token available to send notification.');
       return;
     }
-    const token = (await Notifications.getExpoPushTokenAsync()).data;
-    console.log(token);
-  
-    // Send the token to your server.
-    fetch('https://your-server.com/api/tokens', {
+    
+    // Send the notification.
+    fetch('https://ga9ek43t9c.execute-api.us-east-1.amazonaws.com/dev/sendNotification', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        token: token,
-        // userId: 'user123',
+        token: expoPushToken,
+        title: "Test Notification",
+        body: "This is a test notification from your React Native app!",
       }),
     })
     .then(response => response.json())
-    .then(data => console.log('Token registered with server:', data))
+    .then(data => console.log('Notification sent:', data))
     .catch((error) => {
-      console.error('Error registering token with server:', error);
+      console.error('Error sending notification:', error);
+      Alert.alert('Send Error', 'Error sending notification. Check console for more details.');
     });
-  
-    return token;
-  }
-  
-
-  // Dummy function to illustrate where you'd trigger a notification.
-  // This would need to be connected to a backend or use a tool like Expo's notification tool.
-  const sendTestNotification = () => {
-    Alert.alert(
-      'Trigger Notification',
-      'Placeholder Use server or Expo\'s Push Notification Tool to send a test notification.',
-    );
   };
 
   return (
     <View style={styles.container}>
-      <CurrentAppUser/>
+      <CurrentAppUser />
       <Text style={styles.title}>Push Notification Test</Text>
       <Text style={styles.tokenLabel}>Expo Push Token:</Text>
       <Text selectable style={styles.token}>{expoPushToken}</Text>
