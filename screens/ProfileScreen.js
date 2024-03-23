@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, TextInput, Button, StyleSheet, ScrollView, Alert, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, TextInput, Button, StyleSheet, ScrollView, Alert, KeyboardAvoidingView, Platform, Modal, Text } from 'react-native';
 import { fetchUserAttributes, updateUserAttributes } from 'aws-amplify/auth';
 import LogoComponent from '../Components/LogoComponent';
 
@@ -8,19 +8,18 @@ const ProfileScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [address, setAddress] = useState('');
-  const [clipNumber, setClipNumber] = useState('');
+  const [clipNumbers, setClipNumbers] = useState(['']); // Changed to manage multiple clip numbers
 
   useEffect(() => {
-    // Simulated fetching user attributes
     const fetchUserProfile = async () => {
       try {
-        // In real implementation, replace with actual fetching logic
         const userInfo = await fetchUserAttributes();
-        setName(userInfo.name);
-        setEmail(userInfo.email);
-        setPhoneNumber(userInfo['custom:Phone-Number']); // Adjust according to the actual attribute key
-        setAddress(userInfo.address);
-        setClipNumber(userInfo['custom:Clip-Number']); // Adjust according to the actual attribute key
+        setName(userInfo.name || '');
+        setEmail(userInfo.email || '');
+        setPhoneNumber(userInfo['custom:Phone-Number'] || '');
+        setAddress(userInfo.address || '');
+        const clipNumbersArray = userInfo['custom:clipNumber'] ? userInfo['custom:clipNumber'].split(',') : [''];
+        setClipNumbers(clipNumbersArray); // Store clip numbers as an array
       } catch (error) {
         console.error('Error fetching user information:', error);
         Alert.alert('Error fetching user information');
@@ -31,33 +30,34 @@ const ProfileScreen = ({ navigation }) => {
 
   async function handleUpdateProfile() {
     try {
+      const clipNumbersString = clipNumbers.join(',');
       const updateResult = await updateUserAttributes({
         userAttributes: {
-          email: email, // updatedEmail from the form
-          name: name, // updatedName from the form
-          // Add additional attributes as necessary
+          email, // Since email is non-editable, it doesn't need to be updated here
+          name,
           'custom:Phone-Number': phoneNumber,
-          'address': address,
-          'custom:clipNumber': clipNumber,
+          address,
+          'custom:clipNumber': clipNumbersString,
         },
       });
-  
-      // Process the update result if necessary
+
       console.log('Update result:', updateResult);
-  
-      // You might want to handle next steps depending on the result
-      // For example, informing the user about the necessity to confirm the new email
-      if (updateResult === 'SUCCESS') {
-        Alert.alert('Profile Updated Successfully!');
-      } else {
-        // Handle other statuses accordingly
-      }
+      Alert.alert('Profile Updated Successfully!');
     } catch (error) {
       console.error('Error updating user attributes:', error);
-      Alert.alert('Error updating profile', error.message || JSON.stringify(error));
+      Alert.alert('Error updating profile', error.message || 'An error occurred during the update.');
     }
   }
-  
+
+  const handleClipNumberChange = (text, index) => {
+    const newClipNumbers = [...clipNumbers];
+    newClipNumbers[index] = text;
+    setClipNumbers(newClipNumbers);
+  };
+
+  const addClipNumber = () => {
+    setClipNumbers([...clipNumbers, '']);
+  };
 
   return (
     <KeyboardAvoidingView 
@@ -65,25 +65,30 @@ const ProfileScreen = ({ navigation }) => {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}
     >
-        <ScrollView style={{ flex: 1 }}>
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <View style={styles.container}>
-            <LogoComponent />
-            <TextInput value={name} onChangeText={setName} placeholder="Full Name" autoCapitalize="none" style={styles.input} />
-            <TextInput value={email} editable={false} placeholder="Email" style={[styles.input, styles.nonEditableInput]} />
+          <LogoComponent />
+          <TextInput value={name} onChangeText={setName} placeholder="Full Name" autoCapitalize="none" style={styles.input} />
+            <TextInput value={email} editable={false} onChangeText={setEmail} placeholder="Email" style={[styles.input, styles.nonEditableInput]} />
             <TextInput value={phoneNumber} onChangeText={setPhoneNumber} placeholder="Phone Number" keyboardType="phone-pad" style={styles.input} />
             <TextInput value={address} onChangeText={setAddress} placeholder="Address" style={styles.input} />
-            <TextInput value={clipNumber} onChangeText={setClipNumber} placeholder="Clip Number" style={styles.input} />
-            
-            <View style={styles.buttonContainer}>
-                <Button title="Update Profile" onPress={handleUpdateProfile} />
-            </View>
-
-            {/* <View style={styles.buttonContainer}>
-                <Button title="Change Email" onPress={() => navigation.navigate('ChangeEmailScreen')} />
-            </View> */}
-            
+          {clipNumbers.map((clipNumber, index) => (
+            <TextInput
+              key={index}
+              value={clipNumber}
+              onChangeText={(text) => handleClipNumberChange(text, index)}
+              placeholder="Clip Number"
+              keyboardType="numeric"
+              maxLength={4}
+              style={styles.input}
+            />
+          ))}
+          <Button title="Add another Clip Number" onPress={addClipNumber} />
+          <View style={styles.buttonContainer}>
+            <Button title="Update Profile" onPress={handleUpdateProfile} />
+          </View>
         </View>
-        </ScrollView>
+      </ScrollView>
     </KeyboardAvoidingView>
   );
 };
@@ -103,16 +108,13 @@ const styles = StyleSheet.create({
     borderRadius: 5, 
     padding: 10,
   },
-  errorInput: {
-    borderColor: 'red',
-  },
   nonEditableInput: {
-    backgroundColor: '#f3f3f3', // or any color that indicates non-editability
+    backgroundColor: '#f3f3f3',
   },
   buttonContainer: {
     width: '75%',
     marginVertical: 10,
-  }, 
+  },
 });
 
 export default ProfileScreen;

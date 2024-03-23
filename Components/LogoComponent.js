@@ -5,7 +5,7 @@ import { Image, StyleSheet } from 'react-native';
 const LogoComponent = () => {
   return (
     <Image
-      source={require('../assets/AlertWet-borderless-icon.png')} // Update the path to your logo
+      source={require('../assets/AlertWet-Trans.png')} // Update the path to your logo
       resizeMode="contain" // Adjusts the image to fit while maintaining aspect ratio
       style={styles.logo}
     />

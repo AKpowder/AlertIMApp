@@ -16,14 +16,18 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.anonymous.AlertWet",
+      "backgroundModes": ["remote-notification"]
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/AlertWet-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.anonymous.AlertWet"
+      "package": "com.anonymous.AlertWet",
+      "useNextNotificationsApi": true,
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
       "favicon": "./assets/favicon.png"

@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { View, TextInput, Button, Alert, StyleSheet } from 'react-native';
 import { signIn } from 'aws-amplify/auth';
 
-const SignInScreen = ({ navigation }) => {
-  const [email, setEmail] = useState('');
+const SignInScreen = ({ navigation, route }) => {
+  const [email, setEmail] = useState(route.params?.email || '');
   const [password, setPassword] = useState('');
 
   async function handleSignIn() { 

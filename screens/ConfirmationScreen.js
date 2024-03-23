@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
 import { View, TextInput, Button, Alert, StyleSheet } from 'react-native';
 import { confirmSignUp } from 'aws-amplify/auth';
+import LogoComponent from '../Components/LogoComponent';
 
 const ConfirmationScreen = ({ navigation, route }) => {
   const [confirmationCode, setConfirmationCode] = useState('');
   const username = route.params.username; // Retrieve the passed username
+  const email = route.params.email; // Retrieve the passed username
 
   
   async function handleConfirmation() {
     try {
       await confirmSignUp({username, confirmationCode});
       Alert.alert('Confirmation successful!');
-      navigation.navigate('SignInScreen'); // Navigate to sign-in screen upon successful confirmation
+      navigation.navigate('SignInScreen', { email }); // Navigate to sign-in screen upon successful confirmation
     } catch (error) {
       console.error('Error confirming sign up:', error);
       Alert.alert('Error confirming sign up', error.message);
@@ -20,11 +22,13 @@ const ConfirmationScreen = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
+      <LogoComponent />
       <TextInput
         value={username}
         placeholder="Username"
         autoCapitalize="none"
-        style={styles.input}
+        editable={false}
+        style={styles.invisibleInput}
       />
       <TextInput
         value={confirmationCode}
@@ -43,6 +47,9 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     padding: 16,
+  },
+  invisibleInput: {
+    height: 0, // Set height to 0 to make the input invisible
   },
   input: {
     height: 40,
