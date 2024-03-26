@@ -54,7 +54,11 @@ const SignUpScreen = ({ navigation }) => {
   };
 
   const addClipNumber = () => {
-    setClipNumbers([...clipNumbers, '']);
+    if (clipNumbers.length < 5) {
+      setClipNumbers([...clipNumbers, '']);
+    } else {
+      Alert.alert('Maximum of 5 clip numbers can be added.');
+    }
   };
 
   return (
