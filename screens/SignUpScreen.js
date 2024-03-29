@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { View, TextInput, Button, Alert, StyleSheet, KeyboardAvoidingView, Platform, ScrollView, Modal, Text, TouchableOpacity } from 'react-native';
 import { signUp } from 'aws-amplify/auth';
 import LogoComponent from '../Components/LogoComponent';
+import moment from 'moment-timezone'; // Add this line to import moment-timezone
+const timezone = moment.tz.guess(); // Get the user's timezone
 
 const SignUpScreen = ({ navigation }) => {
   const [username, setUsername] = useState('');
@@ -23,15 +25,16 @@ const SignUpScreen = ({ navigation }) => {
         options: {
           userAttributes: {
             'custom:clipNumber': clipNumbersString,
-            'custom:Phone-Number': phoneNumber,
+            'custom:phoneNumber': phoneNumber,
             email,
             name,
-            address
+            address,
+            'custom:userTimezone': timezone,
           },
         }
       });
       console.log('Sign-up successful!', user);
-      Alert.alert('Sign-up successful!');
+      Alert.alert('Please Verify your Email');
       navigation.navigate('ConfirmationScreen', { username, email });
     } catch (error) {
       console.error('Error signing up:', error);
@@ -76,6 +79,7 @@ const SignUpScreen = ({ navigation }) => {
           <TextInput value={password} onChangeText={setPassword} placeholder="Password" autoCapitalize="none" secureTextEntry style={styles.input} />
           <TextInput value={phoneNumber} onChangeText={setPhoneNumber} placeholder="Phone Number" keyboardType="phone-pad" style={styles.input} />
           <TextInput value={address} onChangeText={setAddress} placeholder="Address" style={styles.input} />
+          <TextInput value={timezone} placeholder="Timezone" style={styles.input} />
           {clipNumbers.map((clipNumber, index) => (
             <TextInput 
               key={index}

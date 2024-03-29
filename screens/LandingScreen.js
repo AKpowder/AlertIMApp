@@ -42,12 +42,12 @@ export default function LandingScreen({ navigation }) {
           onPress={() => navigation.navigate('NotificationTest')}
         />
       </View> */}
-      {/* <View style={styles.buttonContainer}>
+      <View style={styles.buttonContainer}>
         <Button
           title="HomeScreen"
           onPress={() => navigation.navigate('HomeScreen')}
         />
-      </View> */}
+      </View>
     </View>
   );
 }

@@ -18,7 +18,9 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.anonymous.AlertWet",
-      "backgroundModes": ["remote-notification"]
+      "backgroundModes": [
+        "remote-notification"
+      ]
     },
     "android": {
       "adaptiveIcon": {
@@ -37,6 +39,9 @@
         "projectId": "12e14139-6d43-4572-b4f1-fcab1ee23e81"
       }
     },
-    "owner": "chrisgray"
+    "owner": "chrisgray",
+    "plugins": [
+      
+    ]
   }
 }

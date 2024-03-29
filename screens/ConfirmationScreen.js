@@ -15,6 +15,7 @@ const ConfirmationScreen = ({ navigation, route }) => {
       Alert.alert('Confirmation successful!');
       navigation.navigate('SignInScreen', { email }); // Navigate to sign-in screen upon successful confirmation
     } catch (error) {
+      console.log(`StatusCode: ${res.statusCode}`); // Log the status code
       console.error('Error confirming sign up:', error);
       Alert.alert('Error confirming sign up', error.message);
     }

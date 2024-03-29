@@ -16,7 +16,7 @@ const ProfileScreen = ({ navigation }) => {
                 const userInfo = await fetchUserAttributes();
                 setName(userInfo.name || '');
                 setEmail(userInfo.email || '');
-                setPhoneNumber(userInfo['custom:Phone-Number'] || '');
+                setPhoneNumber(userInfo['custom:phoneNumber'] || '');
                 setAddress(userInfo.address || '');
                 const clipNumbersArray = userInfo['custom:clipNumber'] ? userInfo['custom:clipNumber'].split(',') : [''];
                 setClipNumbers(clipNumbersArray);
@@ -34,7 +34,7 @@ const ProfileScreen = ({ navigation }) => {
             const updateResult = await updateUserAttributes({
                 userAttributes: {
                     name,
-                    'custom:Phone-Number': phoneNumber,
+                    'custom:phoneNumber': phoneNumber,
                     address,
                     'custom:clipNumber': clipNumbersString,
                 },
