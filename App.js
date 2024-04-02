@@ -55,7 +55,7 @@ function App() {
         <Stack.Screen name="NotificationTest" component={NotificationTestScreen} options={{ title: 'Test Notifications' }} />
         <Stack.Screen name="ProfileScreen" component={ProfileScreen} options={{ title: 'Profile' }} />
         <Stack.Screen name="ChangeEmailScreen" component={ChangeEmailScreen} options={{ title: 'Change Email' }} />
-        <Stack.Screen name="StatusScreen" component={StatusScreen} options={{ title: 'AlertWet Pad Status' }} />
+        <Stack.Screen name="StatusScreen" component={StatusScreen} options={{ title: 'AlertPad Status' }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

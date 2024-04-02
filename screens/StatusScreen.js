@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, Button, StyleSheet, ScrollView, Alert, KeyboardAvoidingView, Platform } from 'react-native';
 import { fetchUserAttributes } from 'aws-amplify/auth';
 import LogoComponent from '../Components/LogoComponent';
+import CurrentAppUser from '../Components/CurrentUser';
 
 const StatusScreen = ({ navigation }) => {
   const [clipNumbers, setClipNumbers] = useState([]);
@@ -50,6 +51,7 @@ const StatusScreen = ({ navigation }) => {
     >
       <ScrollView style={{ flex: 1 }}>
         <View style={styles.container}>
+          <CurrentAppUser />
           <LogoComponent />
           {statuses.map((item, index) => (
             <Text key={index} style={styles.input}>

@@ -1,25 +1,35 @@
-// Add any necessary imports for icons or images
-import React, { useState, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { fetchUserAttributes } from 'aws-amplify/auth';
-import { useNavigation } from '@react-navigation/native';
-import ProfileIcon from '../assets/Profile_Picture.png'
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
+import ProfileIcon from '../assets/Profile_Picture.png';
 
 const CurrentAppUser = () => {
   const [username, setUsername] = useState('');
   const navigation = useNavigation();
 
-  useEffect(() => {
-    async function getCurrentUser() {
-      try {
-        const userInfo = await fetchUserAttributes();
-        setUsername(userInfo.name); // Adjust according to your attribute keys
-      } catch (error) {
-        console.log('Error getting user info:', error);
-      }
-    }
-    getCurrentUser();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      let isActive = true;
+
+      const getCurrentUser = async () => {
+        try {
+          const userInfo = await fetchUserAttributes();
+          if (isActive) {
+            setUsername(userInfo.name); // Adjust according to your attribute keys
+          }
+        } catch (error) {
+          console.log('Error getting user info:', error);
+        }
+      };
+
+      getCurrentUser();
+
+      return () => {
+        isActive = false;
+      };
+    }, [])
+  );
 
   return (
     <TouchableOpacity style={styles.userButton} onPress={() => navigation.navigate('ProfileScreen')}>
@@ -32,6 +42,7 @@ const CurrentAppUser = () => {
     </TouchableOpacity>
   );
 };
+
 
 const styles = StyleSheet.create({
   userButton: {

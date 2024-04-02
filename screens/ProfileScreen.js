@@ -4,7 +4,9 @@ import { fetchUserAttributes, updateUserAttributes } from 'aws-amplify/auth';
 import LogoComponent from '../Components/LogoComponent';
 
 const ProfileScreen = ({ navigation }) => {
-    const [name, setName] = useState('');
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [userTimezone, setUserTimezone] = useState('');
     const [email, setEmail] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const [address, setAddress] = useState('');
@@ -14,7 +16,9 @@ const ProfileScreen = ({ navigation }) => {
         const fetchUserProfile = async () => {
             try {
                 const userInfo = await fetchUserAttributes();
-                setName(userInfo.name || '');
+                setFirstName(userInfo['custom:firstName'] || '');
+                setLastName(userInfo['custom:lastName'] || '');
+                setUserTimezone(userInfo['custom:userTimezone'] || '');
                 setEmail(userInfo.email || '');
                 setPhoneNumber(userInfo['custom:phoneNumber'] || '');
                 setAddress(userInfo.address || '');
@@ -31,9 +35,13 @@ const ProfileScreen = ({ navigation }) => {
     async function handleUpdateProfile() {
         try {
             const clipNumbersString = clipNumbers.join(',');
+            const fullName = `${firstName} ${lastName}`;
             const updateResult = await updateUserAttributes({
                 userAttributes: {
-                    name,
+                    'custom:firstName': firstName,
+                    'custom:lastName': lastName,
+                    'custom:userTimezone': userTimezone,
+                    'name': fullName,
                     'custom:phoneNumber': phoneNumber,
                     address,
                     'custom:clipNumber': clipNumbersString,
@@ -43,7 +51,9 @@ const ProfileScreen = ({ navigation }) => {
             console.log('User attributes update result:', updateResult);
 
             const userUpdateData = {
-                name,
+                firstName,
+                lastName,
+                name: fullName,
                 email, // Even if not editable, still include for backend consistency
                 phoneNumber,
                 address,
@@ -97,7 +107,8 @@ const ProfileScreen = ({ navigation }) => {
             <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
                 <View style={styles.container}>
                     <LogoComponent />
-                    <TextInput value={name} onChangeText={setName} placeholder="Full Name" autoCapitalize="none" style={styles.input} />
+                    <TextInput value={firstName} onChangeText={setFirstName} placeholder="First Name" autoCapitalize="none" style={styles.input} />
+                    <TextInput value={lastName} onChangeText={setLastName} placeholder="Last Name" autoCapitalize="none" style={styles.input} />
                     <TextInput value={email} editable={false} onChangeText={setEmail} placeholder="Email" style={[styles.input, styles.nonEditableInput]} />
                     <TextInput value={phoneNumber} onChangeText={setPhoneNumber} placeholder="Phone Number" keyboardType="phone-pad" style={styles.input} />
                     <TextInput value={address} onChangeText={setAddress} placeholder="Address" style={styles.input} />
