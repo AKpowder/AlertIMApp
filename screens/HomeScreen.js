@@ -14,7 +14,7 @@ export default function HomeScreen({ navigation }) {
       <CurrentAppUser />
       <LogoComponent />
       <View style={styles.buttonContainer}>
-        <Button title="Setup Gateway" onPress={() => navigation.navigate('GateWayConfig')} />
+        <Button title="Setup Gateway" onPress={() => navigation.navigate('SetupScreen')} />
       </View>
       <View style={styles.buttonContainer}>
         <Button title="AlertPad Status" onPress={() => navigation.navigate('StatusScreen')} />

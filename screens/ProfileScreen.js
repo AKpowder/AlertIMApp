@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, TextInput, Button, StyleSheet, ScrollView, Alert, KeyboardAvoidingView, Platform } from 'react-native';
-import { fetchUserAttributes, updateUserAttributes } from 'aws-amplify/auth';
+import { fetchUserAttributes, updateUserAttributes, getCurrentUser } from 'aws-amplify/auth';
 import LogoComponent from '../Components/LogoComponent';
 
 const ProfileScreen = ({ navigation }) => {
@@ -11,11 +11,16 @@ const ProfileScreen = ({ navigation }) => {
     const [phoneNumber, setPhoneNumber] = useState('');
     const [address, setAddress] = useState('');
     const [clipNumbers, setClipNumbers] = useState(['']);
+    const [phoneToken, setPhoneToken] = useState(['']);
+    const [userName, setUserName] = useState(['']);
 
     useEffect(() => {
         const fetchUserProfile = async () => {
             try {
                 const userInfo = await fetchUserAttributes();
+                //Get Username
+                const cognitoUser = await getCurrentUser();
+                setUserName(cognitoUser.username);
                 setFirstName(userInfo['custom:firstName'] || '');
                 setLastName(userInfo['custom:lastName'] || '');
                 setUserTimezone(userInfo['custom:userTimezone'] || '');
@@ -24,6 +29,7 @@ const ProfileScreen = ({ navigation }) => {
                 setAddress(userInfo.address || '');
                 const clipNumbersArray = userInfo['custom:clipNumber'] ? userInfo['custom:clipNumber'].split(',') : [''];
                 setClipNumbers(clipNumbersArray);
+                setPhoneToken(userInfo['custom:phoneToken'] || '');
             } catch (error) {
                 console.error('Error fetching user information:', error);
                 Alert.alert('Error fetching user information');
@@ -45,18 +51,22 @@ const ProfileScreen = ({ navigation }) => {
                     'custom:phoneNumber': phoneNumber,
                     address,
                     'custom:clipNumber': clipNumbersString,
+                    'custom:phoneToken': phoneToken,
                 },
             });
 
             console.log('User attributes update result:', updateResult);
 
             const userUpdateData = {
+                userName,
                 firstName,
                 lastName,
                 name: fullName,
                 email, // Even if not editable, still include for backend consistency
                 phoneNumber,
+                userTimezone,
                 address,
+                phoneToken,
                 clipNumbers: clipNumbers.join(','), // Ensure this matches your API expectation
             };
             console.log('Sending user update data:', JSON.stringify(userUpdateData));

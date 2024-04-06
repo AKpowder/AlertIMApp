@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Button, StyleSheet, ScrollView, Alert, KeyboardAvoidingView, Platform } from 'react-native';
-import { fetchUserAttributes } from 'aws-amplify/auth';
+import { fetchUserAttributes, getCurrentUser } from 'aws-amplify/auth';
 import LogoComponent from '../Components/LogoComponent';
-import CurrentAppUser from '../Components/CurrentUser';
+import moment from 'moment';
 
 const StatusScreen = ({ navigation }) => {
   const [clipNumbers, setClipNumbers] = useState([]);
@@ -14,34 +14,81 @@ const StatusScreen = ({ navigation }) => {
 
   const fetchUserProfileAndStatus = async () => {
     try {
+      // Get Username
+      const cognitoUser = await getCurrentUser();
+      const username = cognitoUser.username;
+
       const userInfo = await fetchUserAttributes();
       const userClipNumbers = userInfo['custom:clipNumber'] ? userInfo['custom:clipNumber'].split(',') : [];
-      setClipNumbers(userClipNumbers);
-      await fetchClipStatus(userClipNumbers);
+      await fetchClipStatus(username, userClipNumbers);
     } catch (error) {
       console.error('Error fetching user information:', error);
       Alert.alert('Error fetching user information');
     }
   };
 
-  const fetchClipStatus = async (clipNums) => {
-    try {
+  const fetchClipStatus = async (username, clipNums) => {
+    try {  
+      const numRec = 1;
+      // Make a GET request with the username in the header
       const response = await fetch('https://ga9ek43t9c.execute-api.us-east-1.amazonaws.com/dev/padStatus', {
-        method: 'POST',
+        method: 'GET',
         headers: {
           'Content-Type': 'application/json',
+          'User': username, // Pass the username in the request header
+          'Numrec': numRec
         },
-        body: JSON.stringify({ clipNumbers: clipNums }), // Change to send array
       });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+  
       const responseBody = await response.json();
-      setStatuses(responseBody); // Update to handle array of statuses
+      
+      // Check if responseBody.clips exists and is an array
+      if (responseBody.clips && Array.isArray(responseBody.clips)) {
+        const formattedStatuses = responseBody.clips.map((clip) => {
+          const latestData = clip.data && clip.data.length > 0 ? clip.data[0] : { timestamp: 'N/A', padstatus: 'Unknown' };
+          return {
+            clipNumber: clip.clip,
+            padstatus: latestData.padstatus,
+            // Use moment to format the timestamp
+            timestamp: latestData.timestamp !== 'N/A' ? moment(latestData.timestamp, "DD-MMM-YYYY HH:mm:ss").format('LLL') : 'N/A',
+          };
+        });
+        setStatuses(formattedStatuses);
+      } else {
+        throw new Error('Unexpected response format');
+      }
+  
     } catch (error) {
       console.error('Error fetching clip statuses:', error);
-      Alert.alert('Error fetching clip statuses');
-      // Set error status for each clip number
-      setStatuses(clipNums.map(() => ({ status: 'Error fetching status' })));
+      Alert.alert('Error fetching clip statuses', error.message);
+      setStatuses([]); // Clear statuses on error
     }
   };
+
+  const getStatusColor = (status) => {
+    switch (status) {
+      case 'Conn':
+        return { color: 'blue' };
+      case 'DisConn':
+        return { color: 'grey' };
+      case 'Dry':
+        return { color: 'green' };
+      case 'Damp':
+        return { color: 'orange' };
+      case 'Wet':
+        return { color: 'purple' };
+      case 'Soaked':
+        return { color: 'red' };
+      default:
+        return { color: 'black' }; // Default color
+    }
+  };
+  
+  
+  
 
   return (
     <KeyboardAvoidingView 
@@ -51,12 +98,20 @@ const StatusScreen = ({ navigation }) => {
     >
       <ScrollView style={{ flex: 1 }}>
         <View style={styles.container}>
-          <CurrentAppUser />
           <LogoComponent />
           {statuses.map((item, index) => (
-            <Text key={index} style={styles.input}>
-              Clip Number {item.clipNumber}: {item.status}
-            </Text>
+            <View key={index} style={styles.statusRow}>
+              <Text style={styles.statusText}>
+                Clip {item.clipNumber}:
+                <Text style={getStatusColor(item.padstatus)}> 
+                  {` ${item.padstatus}`}
+                </Text>
+              </Text>
+              <Text style={styles.divider}> - </Text>
+              <Text style={styles.timestamp}>
+                {item.timestamp}
+              </Text>
+            </View>
           ))}
           <Button title="Refresh Status" onPress={fetchUserProfileAndStatus} />
         </View>
@@ -80,6 +135,30 @@ const styles = StyleSheet.create({
     borderRadius: 5, 
     padding: 10,
     textAlign: 'center',
+  },
+  statusRow: {
+    flexDirection: 'row',
+    justifyContent: 'center', // Align children in the center of the container
+    alignItems: 'center',
+    width: '100%',
+    marginBottom: 15,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    padding: 10,
+  },
+  statusText: {
+    flex: 1, // Allow flexible space around the text
+    textAlign: 'right', // Align the text to the right of the flexible space
+    paddingRight: 10, // Optional: adjust space between text and divider
+  },
+  divider: {
+    paddingHorizontal: 5, // Adjust the padding to suit your design
+  },
+  timestamp: {
+    flex: 1, // Allow flexible space around the text
+    textAlign: 'left', // Align the text to the left of the flexible space
+    paddingLeft: 10, // Optional: adjust space between divider and timestamp
   },
 });
 
