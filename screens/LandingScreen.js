@@ -38,12 +38,6 @@ export default function LandingScreen({ navigation }) {
       </View>
       {/* <View style={styles.buttonContainer}>
         <Button
-          title="NotificationTest"
-          onPress={() => navigation.navigate('NotificationTest')}
-        />
-      </View>
-      <View style={styles.buttonContainer}>
-        <Button
           title="HomeScreen"
           onPress={() => navigation.navigate('HomeScreen')}
         />

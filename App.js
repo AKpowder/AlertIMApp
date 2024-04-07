@@ -1,5 +1,5 @@
 import 'react-native-get-random-values';
-import React, { useEffect } from 'react'; // Updated to include useEffect
+import React, { useEffect, useRef } from 'react'; // Updated to include useEffect
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import * as Notifications from 'expo-notifications'; // Import Notifications
@@ -17,12 +17,17 @@ import SetupScreen from './screens/SetupScreen';
 
 import { Amplify } from 'aws-amplify';
 import awsmobile from './src/aws-exports.js';
+import { Alert } from 'react-native';
 
 Amplify.configure(awsmobile);
 
 const Stack = createStackNavigator();
 
 function App() {
+
+  const navigationRef = useRef(); // Create the ref for the navigation container
+
+
   useEffect(() => {
     // Listener for notifications received while the app is in the foreground
     const foregroundSubscription = Notifications.addNotificationReceivedListener(notification => {
@@ -31,9 +36,24 @@ function App() {
     });
 
     // Listener for responses to notifications received (i.e., the user interacts with the notification)
-    const responseSubscription = Notifications.addNotificationResponseReceivedListener(response => {
+    const responseSubscription = Notifications.addNotificationResponseReceivedListener(async response => {
       console.log('Notification clicked:', response);
-      // Here you could handle the notification response (e.g., navigate to a specific screen)
+    
+      try {
+        // Check if the user is authenticated
+        const currentUser = await Auth.currentAuthenticatedUser();
+        console.log('Current user:', currentUser);
+    
+        // If authenticated, navigate to the desired screen
+        navigationRef.current?.navigate('StatusScreen');
+      } catch (error) {
+        console.error('User is not authenticated:', error);
+        // Optionally navigate to the SignIn screen or show an alert
+        navigationRef.current?.navigate('SignInScreen');
+        Alert.alert("Please Log in before viewing the status screen.");
+        // Or show an alert
+        // Alert.alert("Please log in to view this screen");
+      }
     });
 
     return () => {
@@ -44,7 +64,7 @@ function App() {
   }, []);
 
   return (
-    <NavigationContainer>
+    <NavigationContainer ref={navigationRef}>
       <Stack.Navigator>
         <Stack.Screen name="LandingScreen" component={LandingScreen} options={{ title: 'AlertWet', headerTitleAlign: 'center' }} />
         <Stack.Screen name="HomeScreen" component={HomeScreen} options={{ title: 'AlertWet', headerTitleAlign: 'center' }} />
