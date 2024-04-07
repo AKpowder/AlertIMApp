@@ -13,6 +13,16 @@
     "production": {}
   },
   "submit": {
-    "production": {}
+    "production": {
+      "android": {
+        "serviceAccountKeyPath": "./alertwet-56d3369489cb.json",
+        "track": "internal"
+      },
+      "ios": {
+        "appleId": "kimberly.gray@alertwet.com",
+        "ascAppId": "121948044",
+        "appleTeamId": "CPCRS4C79T"
+      }
+    }
   }
 }

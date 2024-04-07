@@ -16,9 +16,9 @@ import StatusScreen from './screens/StatusScreen';
 import SetupScreen from './screens/SetupScreen';
 
 import { Amplify } from 'aws-amplify';
-import awsExports from './src/aws-exports';
+import awsmobile from './src/aws-exports.js';
 
-Amplify.configure(awsExports);
+Amplify.configure(awsmobile);
 
 const Stack = createStackNavigator();
 

@@ -2,11 +2,10 @@
   "expo": {
     "name": "AlertWet",
     "slug": "alertwet",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/AlertWet-icon.png",
     "userInterfaceStyle": "light",
-    "projectId": "12e14139-6d43-4572-b4f1-fcab1ee23e81",
     "splash": {
       "image": "./assets/AlertWet-icon.png",
       "resizeMode": "contain",
@@ -18,9 +17,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.anonymous.AlertWet",
-      "backgroundModes": [
-        "remote-notification"
-      ]
+      "buildNumber": "2"
     },
     "android": {
       "adaptiveIcon": {
@@ -28,8 +25,8 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.anonymous.AlertWet",
-      "useNextNotificationsApi": true,
-      "googleServicesFile": "./google-services.json"
+      "googleServicesFile": "./android/app/google-services.json",
+      "versionCode": 2
     },
     "web": {
       "favicon": "./assets/favicon.png"
