@@ -7,6 +7,7 @@ import moment from 'moment';
 const StatusScreen = ({ navigation }) => {
   const [clipNumbers, setClipNumbers] = useState([]);
   const [statuses, setStatuses] = useState([]);
+  const [showClipMessage, setShowClipMessage] = useState(false);
 
   useEffect(() => {
     fetchUserProfileAndStatus();
@@ -20,7 +21,15 @@ const StatusScreen = ({ navigation }) => {
 
       const userInfo = await fetchUserAttributes();
       const userClipNumbers = userInfo['custom:clipNumber'] ? userInfo['custom:clipNumber'].split(',') : [];
-      await fetchClipStatus(username, userClipNumbers);
+      if (userClipNumbers.length === 0) {
+        // If there are no clip numbers, show the message and do not fetch clip status
+        setShowClipMessage(true);
+        return;
+      } else {
+        // If there are clip numbers, proceed to fetch clip status and hide the message if previously shown
+        setShowClipMessage(false);
+        await fetchClipStatus(username, userClipNumbers);
+      }
     } catch (error) {
       console.error('Error fetching user information:', error);
       Alert.alert('Error fetching user information');
@@ -99,6 +108,11 @@ const StatusScreen = ({ navigation }) => {
       <ScrollView style={{ flex: 1 }}>
         <View style={styles.container}>
           <LogoComponent />
+          {showClipMessage && (
+            <Text style={styles.noClipsText}>
+              No clips linked to your account, please go to your profile and add your clip.
+            </Text>
+          )}
           {statuses.map((item, index) => (
             <View key={index} style={styles.statusRow}>
               <Text style={styles.statusText}>
@@ -159,6 +173,11 @@ const styles = StyleSheet.create({
     flex: 1, // Allow flexible space around the text
     textAlign: 'left', // Align the text to the left of the flexible space
     paddingLeft: 10, // Optional: adjust space between divider and timestamp
+  },
+  noClipsText: {
+    textAlign: 'center',
+    padding: 20,
+    fontSize: 16
   },
 });
 
