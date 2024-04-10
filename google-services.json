@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "286442350159",
+    "project_id": "alertwet-a4221",
+    "storage_bucket": "alertwet-a4221.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:286442350159:android:35f1f55018d7a57bb8ac3a",
+        "android_client_info": {
+          "package_name": "com.anonymous.AlertWet"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCHU_IHfnWbkGRRvP-Dw88WScKNw5prs8k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
