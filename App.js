@@ -14,6 +14,7 @@ import ProfileScreen from './screens/ProfileScreen';
 import ChangeEmailScreen from './screens/ChangeEmailScreen';
 import StatusScreen from './screens/StatusScreen';
 import SetupScreen from './screens/SetupScreen';
+import DeleteAccountScreen from './screens/DeleteAccountScreen.js';
 
 import { Amplify } from 'aws-amplify';
 import awsmobile from './src/aws-exports.js';
@@ -76,6 +77,7 @@ function App() {
         <Stack.Screen name="ChangeEmailScreen" component={ChangeEmailScreen} options={{ title: 'Change Email' }} />
         <Stack.Screen name="StatusScreen" component={StatusScreen} options={{ title: 'AlertPad Status' }} />
         <Stack.Screen name="SetupScreen" component={SetupScreen} options={{ title: 'Setup Gateway' }} />
+        <Stack.Screen name="DeleteAccountScreen" component={DeleteAccountScreen} options={{ title: 'Setup Gateway' }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

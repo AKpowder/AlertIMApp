@@ -137,6 +137,14 @@ const ProfileScreen = ({ navigation }) => {
                     <View style={styles.buttonContainer}>
                         <Button title="Update Profile" onPress={handleUpdateProfile} />
                     </View>
+                    <View style={styles.deleteButtonContainer}>
+                        <Button
+                            title="Delete Account"
+                            onPress={() => navigation.navigate('DeleteAccountScreen')}
+                            color="#FF6347" // Use a distinct color to indicate caution
+                        />
+                    </View>
+
                 </View>
             </ScrollView>
         </KeyboardAvoidingView>
@@ -165,6 +173,11 @@ const styles = StyleSheet.create({
         width: '75%',
         marginVertical: 10,
     },
+    deleteButtonContainer: {
+        marginTop: 20,
+        width: '50%',
+        backgroundColor: '#FF6347', // Optional: Further emphasize the button with background color
+      }
 });
 
 export default ProfileScreen;

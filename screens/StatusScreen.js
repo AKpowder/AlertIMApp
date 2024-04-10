@@ -54,22 +54,26 @@ const StatusScreen = ({ navigation }) => {
   
       const responseBody = await response.json();
       
+      // Initialize statuses array with empty data for each user clip number
+      let newStatuses = clipNums.map(num => ({ clipNumber: num, padstatus: 'No Data', timestamp: 'N/A' }));
+
       // Check if responseBody.clips exists and is an array
       if (responseBody.clips && Array.isArray(responseBody.clips)) {
-        const formattedStatuses = responseBody.clips.map((clip) => {
-          const latestData = clip.data && clip.data.length > 0 ? clip.data[0] : { timestamp: 'N/A', padstatus: 'Unknown' };
-          return {
-            clipNumber: clip.clip,
-            padstatus: latestData.padstatus,
-            // Use moment to format the timestamp
-            timestamp: latestData.timestamp !== 'N/A' ? moment(latestData.timestamp, "DD-MMM-YYYY HH:mm:ss").format('LLL') : 'N/A',
-          };
+        responseBody.clips.forEach((clip) => {
+          const index = newStatuses.findIndex(status => status.clipNumber === clip.clip);
+          if (index !== -1) {
+            const latestData = clip.data && clip.data.length > 0 ? clip.data[0] : { timestamp: 'N/A', padstatus: 'Unknown' };
+            newStatuses[index] = {
+              clipNumber: clip.clip,
+              padstatus: latestData.padstatus,
+              timestamp: latestData.timestamp !== 'N/A' ? moment(latestData.timestamp, "DD-MMM-YYYY HH:mm:ss").format('LLL') : 'N/A',
+            };
+          }
         });
-        setStatuses(formattedStatuses);
-      } else {
-        throw new Error('Unexpected response format');
       }
-  
+      
+      setStatuses(newStatuses);
+    
     } catch (error) {
       console.error('Error fetching clip statuses:', error);
       Alert.alert('Error fetching clip statuses', error.message);

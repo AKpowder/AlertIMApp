@@ -23,6 +23,14 @@ const SignUpScreen = ({ navigation }) => {
   const [clipNumbers, setClipNumbers] = useState(['']);
   const [modalVisible, setModalVisible] = useState(false);
   const [currentClipNumber, setCurrentClipNumber] = useState('');
+  const [inputErrors, setInputErrors] = useState({
+    username: false,
+    firstName: false,
+    lastName: false,
+    email: false,
+    password: false,
+    verifyPassword: false,
+  });
 
   //Request notifications permissions
   const requestNotificationPermission = async () => {
@@ -49,41 +57,74 @@ const SignUpScreen = ({ navigation }) => {
   };
 
   async function handleSignUp() {
-    // Check if passwords match; update state accordingly
-    if (password !== verifyPassword) {
-      setPasswordsMatch(false); // Update state to indicate mismatch
+
+    
+    let newInputErrors = {
+      username: false,
+      firstName: false,
+      lastName: false,
+      email: false,
+      password: false,
+      verifyPassword: false,
+    };
+  
+    // Set errors to true if fields are empty (or for mismatched passwords)
+    newInputErrors.username = !username.trim();
+    newInputErrors.firstName = !firstName.trim();
+    newInputErrors.lastName = !lastName.trim();
+    newInputErrors.email = !email.trim();
+    newInputErrors.password = !password.trim();
+    newInputErrors.verifyPassword = password !== verifyPassword;
+  
+    // Update the input errors state
+    setInputErrors(newInputErrors);
+  
+    // Check if there are any errors
+    const hasErrors = Object.values(newInputErrors).some(error => error);
+  
+    // If there are errors, do not proceed with sign-up
+    if (hasErrors) {
+      Alert.alert('Validation', 'Please fill in all required fields correctly.');
+      return;
+    }
+  
+    // If passwords do not match, set the passwordsMatch state to false and return early
+    if (newInputErrors.verifyPassword) {
+      setPasswordsMatch(false);
       Alert.alert('Password Mismatch', 'The passwords do not match. Please try again.');
       return;
-    } else {
-      setPasswordsMatch(true); // Ensure state is reset if corrected
-      try {
-        const notificationToken = await requestNotificationPermission();
-        const clipNumbersString = clipNumbers.join(',');
-        const fullName = `${firstName} ${lastName}`; // Combine first and last names
-        const sanitizedPhoneNumber = phoneNumber.replace(/\D/g, '');
-        const { user } = await signUp({
-          username,
-          password,
-          options: {
-            userAttributes: {
-              'custom:firstName': firstName,
-              'custom:lastName': lastName,
-              'custom:clipNumber': clipNumbersString,
-              'custom:phoneNumber': sanitizedPhoneNumber,
-              email,
-              'name': fullName,
-              address,
-              ...(notificationToken && { 'custom:phoneToken': notificationToken }),
-            },
-          }
-        });
-        console.log('Sign-up successful!', user);
-        Alert.alert('Please Verify your Email');
-        navigation.navigate('ConfirmationScreen', { username, email });
-      } catch (error) {
-        console.error('Error signing up:', error);
-        Alert.alert('Error signing up', error.message);
-      }
+    }
+  
+    // Proceed with sign-up since there are no errors
+    setPasswordsMatch(true);
+    try {
+      const notificationToken = await requestNotificationPermission();
+      const clipNumbersString = clipNumbers.join(',');
+      const fullName = `${firstName} ${lastName}`; // Combine first and last names
+      const sanitizedPhoneNumber = phoneNumber.replace(/\D/g, '');
+      const defaultAddress = address.trim() === '' ? "Address" : address;
+      const { user } = await signUp({
+        username,
+        password,
+        options: {
+          userAttributes: {
+            'custom:firstName': firstName,
+            'custom:lastName': lastName,
+            'custom:clipNumber': clipNumbersString,
+            'custom:phoneNumber': sanitizedPhoneNumber,
+            email,
+            'name': fullName,
+            'address': defaultAddress,
+            ...(notificationToken && { 'custom:phoneToken': notificationToken }),
+          },
+        }
+      });
+      console.log('Sign-up successful!', user);
+      Alert.alert('Please Verify your Email');
+      navigation.navigate('ConfirmationScreen', { username, email });
+    } catch (error) {
+      console.error('Error signing up:', error);
+      Alert.alert('Error signing up', error.message);
     }
   }
 
@@ -118,40 +159,94 @@ const SignUpScreen = ({ navigation }) => {
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <View style={styles.container}>
           <LogoComponent />
-          <TextInput value={username} onChangeText={setUsername} placeholder="Username" autoCapitalize="none" style={styles.input} />
-          <TextInput value={firstName} onChangeText={setFirstName} placeholder="First Name" autoCapitalize="none" style={styles.input} />
-          <TextInput value={lastName} onChangeText={setLastName} placeholder="Last Name" autoCapitalize="none" style={styles.input} />
-          <TextInput value={email} onChangeText={setEmail} placeholder="Email" keyboardType="email-address" style={styles.input} />
+          <Text style={styles.requiredNote}>* Required field</Text>
+          <Text style={styles.inputHeader}>Username *</Text>
+          <TextInput
+            value={username}
+            onChangeText={(text) => {
+              setUsername(text);
+              setInputErrors(prevErrors => ({ ...prevErrors, username: false }));
+            }}
+            placeholder="Username *"
+            autoCapitalize="none"
+            style={[styles.input, inputErrors.username && styles.errorInput]}
+          />
 
+          <Text style={styles.inputHeader}>First Name *</Text>
+          <TextInput
+            value={firstName}
+            onChangeText={(text) => {
+              setFirstName(text);
+              setInputErrors(prevErrors => ({ ...prevErrors, firstName: false }));
+            }}
+            placeholder="First Name *"
+            autoCapitalize="none"
+            style={[styles.input, inputErrors.firstName && styles.errorInput]}
+          />
 
+          <Text style={styles.inputHeader}>Last Name *</Text>
+          <TextInput 
+            value={lastName} 
+            onChangeText={(text) => {
+              setLastName(text);
+              setInputErrors(prevErrors => ({ ...prevErrors, lastName: false }));
+            }} 
+            placeholder="Last Name *" 
+            autoCapitalize="none" 
+            style={[styles.input, inputErrors.lastName && styles.errorInput]} 
+          />
+
+          <Text style={styles.inputHeader}>Email *</Text>
+          <TextInput 
+            value={email} 
+            onChangeText={(text) => {
+              setEmail(text);
+              setInputErrors(prevErrors => ({ ...prevErrors, email: false }));
+            }} 
+            placeholder="Email *" 
+            autoCapitalize="none" 
+            style={[styles.input, inputErrors.email && styles.errorInput]}
+          />
+
+          <Text style={styles.inputHeader}>Password *</Text>
           <TextInput
             value={password}
-            onChangeText={setPassword}
-            placeholder="Password"
+            onChangeText={(text) => {
+              setPassword(text);
+              setInputErrors(prevErrors => ({ ...prevErrors, password: false }));
+            }}
+            placeholder="Password *"
             secureTextEntry={!passwordVisible}
-            style={styles.input}
+            style={[styles.input, inputErrors.password && styles.errorInput]}
             autoCapitalize="none"
           />
           <TouchableOpacity onPress={() => setPasswordVisible(!passwordVisible)} style={styles.showButton}>
             <Text style={styles.showButtonText}>{passwordVisible ? 'Hide' : 'Show'}</Text>
           </TouchableOpacity>
 
+          <Text style={styles.inputHeader}>Verify Password *</Text>
           <TextInput
             value={verifyPassword}
-            onChangeText={setVerifyPassword}
+            onChangeText={(text) => {
+              setVerifyPassword(text);
+              setInputErrors(prevErrors => ({ ...prevErrors, verifyPassword: false }));
+            }}
             placeholder="Verify Password"
             secureTextEntry={!verifyPasswordVisible}
-            style={styles.input}
+            style={[styles.input, inputErrors.verifyPassword && styles.errorInput]}
             autoCapitalize="none"
           />
           <TouchableOpacity onPress={() => setVerifyPasswordVisible(!verifyPasswordVisible)} style={styles.showButton}>
             <Text style={styles.showButtonText}>{verifyPasswordVisible ? 'Hide' : 'Show'}</Text>
           </TouchableOpacity>
 
-
+          <Text style={styles.inputHeader}>Phone Number</Text>
           <TextInput value={phoneNumber} onChangeText={setPhoneNumber} placeholder="Phone Number" keyboardType="phone-pad" style={styles.input} />
+
+          <Text style={styles.inputHeader}>Address</Text>
           <TextInput value={address} onChangeText={setAddress} placeholder="Address" style={styles.input} />
           {/* <TextInput value={timezone} placeholder="Timezone" style={styles.input} /> */}
+          <Text style={styles.inputHeader}>Clip Number(s)</Text>
           {clipNumbers.map((clipNumber, index) => (
             <TextInput 
               key={index}
@@ -216,6 +311,17 @@ const styles = StyleSheet.create({
     padding: 10,
     marginBottom: 15,
   },
+  inputHeader: {
+    alignSelf: 'flex-start', // Align to the start of the container
+    marginVertical: 5,
+    fontSize: 10,
+  },
+  requiredNote: {
+    alignSelf: 'flex-start', // Align to the start of the form
+    marginVertical: 8, // Adjust the vertical margin as needed
+    fontSize: 12, // Adjust the font size as needed
+    color: '#666', // Adjust the color as needed (for example, a less prominent color)
+  },
   buttonContainer: {
     width: '75%',
     marginVertical: 10,
@@ -270,6 +376,10 @@ const styles = StyleSheet.create({
   showButtonText: {
     color: '#007AFF',
     fontSize: 11,
+  },
+  errorInput: {
+    borderColor: 'red', // Use a color that indicates an error
+    borderWidth: 1, // You can adjust the borderWidth if necessary
   },
 });
 
