@@ -1,30 +1,27 @@
-import React from 'react';
-import { View, Button, StyleSheet } from 'react-native';
+import React, { useEffect } from 'react';
+import { View, Button, StyleSheet, Alert } from 'react-native';
+
 import LogoComponent from '../Components/LogoComponent';
 import CurrentAppUser from '../Components/CurrentUser';
-import SignOutButton from '../Components/SignOutButton'; 
+import SignOutButton from '../Components/SignOutButton';
+
 
 export default function HomeScreen({ navigation }) {
+
+
   return (
     <View style={styles.container}>
-      <CurrentAppUser/>  
-      <LogoComponent />  
+      <CurrentAppUser />
+      <LogoComponent />
+      {/* <View style={styles.buttonContainer}>
+        <Button title="Setup Gateway" onPress={() => navigation.navigate('SetupScreen')} />
+      </View> */}
       <View style={styles.buttonContainer}>
-        <Button
-          title="Setup Gateway"
-          onPress={() => navigation.navigate('GateWayConfig')}
-        />
+        <Button title="AlertPad Status" onPress={() => navigation.navigate('StatusScreen')} />
       </View>
       <View style={styles.buttonContainer}>
-        <Button
-          title="NotificationTest"
-          onPress={() => navigation.navigate('NotificationTest')}
-        />
+        <SignOutButton />
       </View>
-      <View style={styles.buttonContainer}>
-        <SignOutButton/>
-      </View>
-      
     </View>
   );
 }
@@ -36,7 +33,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   buttonContainer: {
-    width: '75%', // Make buttons take up 75% of the page width
-    marginVertical: 10, // Add some vertical spacing between buttons
-  }
+    width: '75%',
+    marginVertical: 10,
+  },
 });

@@ -1,0 +1,28 @@
+{
+  "cli": {
+    "version": ">= 7.5.0"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal"
+    },
+    "preview": {
+      "distribution": "internal"
+    },
+    "production": {}
+  },
+  "submit": {
+    "production": {
+      "android": {
+        "serviceAccountKeyPath": "./alertwet-56d3369489cb.json",
+        "track": "internal"
+      },
+      "ios": {
+        "appleId": "kimberly.gray@alertwet.com",
+        "ascAppId": "121948044",
+        "appleTeamId": "CPCRS4C79T"
+      }
+    }
+  }
+}

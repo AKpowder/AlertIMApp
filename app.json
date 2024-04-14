@@ -2,7 +2,7 @@
   "expo": {
     "name": "AlertWet",
     "slug": "alertwet",
-    "version": "1.0.0",
+    "version": "1.0.5",
     "orientation": "portrait",
     "icon": "./assets/AlertWet-icon.png",
     "userInterfaceStyle": "light",
@@ -16,14 +16,22 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.anonymous.AlertWet",
+      "buildNumber": "5",
+      "runtimeVersion": {
+        "policy": "appVersion"
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/AlertWet-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.anonymous.AlertWet"
+      "package": "com.anonymous.AlertWet",
+      "googleServicesFile": "./google-services.json",
+      "versionCode": 5,
+      "runtimeVersion": "1.0.5"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -33,6 +41,10 @@
         "projectId": "12e14139-6d43-4572-b4f1-fcab1ee23e81"
       }
     },
-    "owner": "chrisgray"
+    "owner": "chrisgray",
+    "plugins": [],
+    "updates": {
+      "url": "https://u.expo.dev/12e14139-6d43-4572-b4f1-fcab1ee23e81"
+    }
   }
 }
