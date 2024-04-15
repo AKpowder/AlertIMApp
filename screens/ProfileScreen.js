@@ -141,7 +141,7 @@ const ProfileScreen = ({ navigation }) => {
                         <Button
                             title="Delete Account"
                             onPress={() => navigation.navigate('DeleteAccountScreen')}
-                            color="#FF6347" // Use a distinct color to indicate caution
+                            color="#FFFFFF" // Use a distinct color to indicate caution
                         />
                     </View>
 

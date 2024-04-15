@@ -204,7 +204,8 @@ const SignUpScreen = ({ navigation }) => {
               setInputErrors(prevErrors => ({ ...prevErrors, email: false }));
             }} 
             placeholder="Email *" 
-            autoCapitalize="none" 
+            autoCapitalize="none"
+            keyboardType="email-address" 
             style={[styles.input, inputErrors.email && styles.errorInput]}
           />
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, StyleSheet, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
+import { View, TextInput, Button, StyleSheet, KeyboardAvoidingView, Platform, ScrollView, Alert } from 'react-native';
 import { confirmSignUp } from 'aws-amplify/auth';
 import LogoComponent from '../Components/LogoComponent';
 
@@ -59,6 +59,9 @@ const styles = StyleSheet.create({
   },
   invisibleInput: {
     height: 0, // Set height to 0 to make the input invisible
+    display: 'none', // Ensures the input is completely removed from the layout and interaction flow
+    opacity: 0, // Ensures the input is invisible if display: 'none' fails
+    pointerEvents: 'none',
   },
   input: {
     height: 40,
