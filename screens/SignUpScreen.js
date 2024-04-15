@@ -112,6 +112,7 @@ const SignUpScreen = ({ navigation }) => {
             'custom:lastName': lastName,
             'custom:clipNumber': clipNumbersString,
             'custom:phoneNumber': sanitizedPhoneNumber,
+            'custom:userTimezone': timezone,
             email,
             'name': fullName,
             'address': defaultAddress,
@@ -180,7 +181,6 @@ const SignUpScreen = ({ navigation }) => {
               setInputErrors(prevErrors => ({ ...prevErrors, firstName: false }));
             }}
             placeholder="First Name *"
-            autoCapitalize="none"
             style={[styles.input, inputErrors.firstName && styles.errorInput]}
           />
 
@@ -192,7 +192,6 @@ const SignUpScreen = ({ navigation }) => {
               setInputErrors(prevErrors => ({ ...prevErrors, lastName: false }));
             }} 
             placeholder="Last Name *" 
-            autoCapitalize="none" 
             style={[styles.input, inputErrors.lastName && styles.errorInput]} 
           />
 
@@ -208,7 +207,7 @@ const SignUpScreen = ({ navigation }) => {
             keyboardType="email-address" 
             style={[styles.input, inputErrors.email && styles.errorInput]}
           />
-
+          <Text style={styles.inputHeader}>Password must be at least 7 characters long and include a capital letter, a number, and a special character.</Text>
           <Text style={styles.inputHeader}>Password *</Text>
           <TextInput
             value={password}
