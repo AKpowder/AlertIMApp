@@ -1,25 +1,70 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Alert, TouchableOpacity } from 'react-native';
 import LogoComponent from '../Components/LogoComponent';
-import { deleteUser, signOut } from 'aws-amplify/auth';
+import { deleteUser, signOut, getCurrentUser } from 'aws-amplify/auth';
 
 const DeleteAccountScreen = ({ navigation }) => {
-    const handleDeleteAccount = async () => {
-        Alert.alert(
-          "Confirm Delete",
-          "Are you sure you want to delete your account? This action cannot be undone.",
-          [
-            {
-              text: "Cancel",
-              onPress: () => console.log("Cancel Pressed"),
-              style: "cancel"
+
+  const [userName, setUserName] = useState('');
+
+  async function handleUpdateProfile() {
+    try {
+        const cognitoUser = await getCurrentUser();
+        setUserName(cognitoUser.username);
+        const userUpdateData = {
+          userName: userName, // Assuming userName is required; replace with actual handling logic
+          firstName: null,
+          lastName: null,
+          name: null,
+          email: null, // Even if not editable, still include for backend consistency
+          phoneNumber: null,
+          userTimezone: null,
+          address: null,
+          phoneToken: null,
+          clipNumbers: null,
+        };
+        console.log('Sending user update data:', JSON.stringify(userUpdateData));
+
+        const response = await fetch('https://ga9ek43t9c.execute-api.us-east-1.amazonaws.com/dev/updateUser', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
             },
-            { text: "Yes, Delete It", onPress: () => confirmDeleteAccount() }
-          ]
-        );
-      };
+            body: JSON.stringify(userUpdateData),
+        });
+
+        const responseBody = await response.json();
+        console.log('Backend update result:', responseBody);
+
+        if (response.ok) { // Check only HTTP status code for success
+            Alert.alert('Profile Updated Successfully!');
+        } else {
+            console.error('Error updating profile in backend:', responseBody.error);
+            Alert.alert('Profile Update Error', responseBody.error || 'Failed to update profile in backend.');
+        }
+    } catch (error) {
+        console.error('Error during the update process:', error);
+        Alert.alert('Profile Update Error', error.message || 'An error occurred during the update.');
+    }
+  }
+
+  const handleDeleteAccount = async () => {
+      Alert.alert(
+        "Confirm Delete",
+        "Are you sure you want to delete your account? This action cannot be undone.",
+        [
+          {
+            text: "Cancel",
+            onPress: () => console.log("Cancel Pressed"),
+            style: "cancel"
+          },
+          { text: "Yes, Delete It", onPress: () => confirmDeleteAccount() }
+        ]
+      );
+    };
   const confirmDeleteAccount = async () => {
     try {
+      handleUpdateProfile();
       await deleteUser();
       // If the deletion is successful, sign the user out and redirect them to the welcome screen
       await signOut();
