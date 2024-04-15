@@ -2,7 +2,7 @@
   "expo": {
     "name": "AlertWet",
     "slug": "alertwet",
-    "version": "1.0.7",
+    "version": "1.0.8",
     "orientation": "portrait",
     "icon": "./assets/AlertWet-icon.png",
     "userInterfaceStyle": "light",
@@ -17,7 +17,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.anonymous.AlertWet",
-      "buildNumber": "7",
+      "buildNumber": "8",
       "runtimeVersion": {
         "policy": "appVersion"
       }
@@ -29,8 +29,8 @@
       },
       "package": "com.anonymous.AlertWet",
       "googleServicesFile": "./google-services.json",
-      "versionCode": 7,
-      "runtimeVersion": "1.0.7"
+      "versionCode": 8,
+      "runtimeVersion": "1.0.8"
     },
     "web": {
       "favicon": "./assets/favicon.png"
