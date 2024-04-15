@@ -51,7 +51,7 @@ const SignUpScreen = ({ navigation }) => {
       return null;
     }
 
-    const token = (await Notifications.getExpoPushTokenAsync()).data;
+    const token = (await Notifications.getExpoPushTokenAsync({"projectId": "12e14139-6d43-4572-b4f1-fcab1ee23e81"})).data;
     console.log("Expo Push Token:", token);
     return token;
   };
