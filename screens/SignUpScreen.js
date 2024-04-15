@@ -207,7 +207,11 @@ const SignUpScreen = ({ navigation }) => {
             keyboardType="email-address" 
             style={[styles.input, inputErrors.email && styles.errorInput]}
           />
-          <Text style={styles.inputHeader}>Password must be at least 7 characters long and include a capital letter, a number, and a special character.</Text>
+          <Text style={styles.inputHeader}>Password Requirements:</Text>
+            <Text style={styles.inputBullet}>• Minimum of 7 characters</Text>
+            <Text style={styles.inputBullet}>• At least one capital letter</Text>
+            <Text style={styles.inputBullet}>• At least one number</Text>
+            <Text style={styles.inputBullet}>• At least one special character</Text>
           <Text style={styles.inputHeader}>Password *</Text>
           <TextInput
             value={password}
@@ -314,7 +318,13 @@ const styles = StyleSheet.create({
   inputHeader: {
     alignSelf: 'flex-start', // Align to the start of the container
     marginVertical: 5,
-    fontSize: 10,
+    fontSize: 13,
+  },
+  inputBullet: {
+    alignSelf: 'flex-start', // Align to the start of the container
+    marginVertical: 2, // Slightly less vertical margin than the header
+    fontSize: 13, // Same font size for consistency
+    marginLeft: 10, // Indent bullets to distinguish them from the header
   },
   requiredNote: {
     alignSelf: 'flex-start', // Align to the start of the form
