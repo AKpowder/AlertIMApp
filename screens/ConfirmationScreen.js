@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, Alert, StyleSheet } from 'react-native';
+import { View, TextInput, Button, StyleSheet, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
 import { confirmSignUp } from 'aws-amplify/auth';
 import LogoComponent from '../Components/LogoComponent';
 
@@ -22,24 +22,32 @@ const ConfirmationScreen = ({ navigation, route }) => {
   }
 
   return (
-    <View style={styles.container}>
-      <LogoComponent />
-      <TextInput
-        value={username}
-        placeholder="Username"
-        autoCapitalize="none"
-        editable={false}
-        style={styles.invisibleInput}
-      />
-      <TextInput
-        value={confirmationCode}
-        onChangeText={setConfirmationCode}
-        placeholder="Confirmation Code"
-        keyboardType="number-pad"
-        style={styles.input}
-      />
-      <Button title="Confirm Sign Up" onPress={handleConfirmation} />
-    </View>
+    <KeyboardAvoidingView 
+      style={{ flex: 1 }}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}
+    >
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+        <View style={styles.container}>
+          <LogoComponent />
+          <TextInput
+            value={username}
+            placeholder="Username"
+            autoCapitalize="none"
+            editable={false}
+            style={styles.invisibleInput}
+          />
+          <TextInput
+            value={confirmationCode}
+            onChangeText={setConfirmationCode}
+            placeholder="Confirmation Code"
+            keyboardType="number-pad"
+            style={styles.input}
+          />
+          <Button title="Confirm Sign Up" onPress={handleConfirmation} />
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 
