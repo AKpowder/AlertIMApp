@@ -7,10 +7,21 @@ const DeleteAccountScreen = ({ navigation }) => {
 
   const [userName, setUserName] = useState('');
 
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const cognitoUser = await getCurrentUser(); // Adjust according to the actual method
+        setUserName(cognitoUser.username);
+      } catch (error) {
+        console.error('Failed to fetch user data:', error);
+      }
+    };
+
+    fetchUserData();
+  }, []); // Empty dependency array means this runs only once after the component mounts
+
   async function handleUpdateProfile() {
     try {
-        const cognitoUser = await getCurrentUser();
-        setUserName(cognitoUser.username);
         const userUpdateData = {
           userName: userName, // Assuming userName is required; replace with actual handling logic
           firstName: null,
@@ -37,7 +48,7 @@ const DeleteAccountScreen = ({ navigation }) => {
         console.log('Backend update result:', responseBody);
 
         if (response.ok) { // Check only HTTP status code for success
-            Alert.alert('Profile Updated Successfully!');
+            console.log('Profile Updated Successfully!');
         } else {
             console.error('Error updating profile in backend:', responseBody.error);
             Alert.alert('Profile Update Error', responseBody.error || 'Failed to update profile in backend.');
@@ -64,7 +75,7 @@ const DeleteAccountScreen = ({ navigation }) => {
     };
   const confirmDeleteAccount = async () => {
     try {
-      handleUpdateProfile();
+      await handleUpdateProfile();
       await deleteUser();
       // If the deletion is successful, sign the user out and redirect them to the welcome screen
       await signOut();
