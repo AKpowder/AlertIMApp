@@ -16,7 +16,7 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.AlertWet",
+      "bundleIdentifier": "com.HomeCare.AlertWet",
       "buildNumber": "12",
       "runtimeVersion": {
         "policy": "appVersion"
