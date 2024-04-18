@@ -27,7 +27,7 @@
         "foregroundImage": "./assets/AlertWet-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.AlertWet.AlertWetHomeCare",
+      "package": "com.anonymous.AlertWet",
       "googleServicesFile": "./google-services.json",
       "versionCode": 12,
       "runtimeVersion": "1.1.2"
