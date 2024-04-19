@@ -16,7 +16,7 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.HomeCare.AlertWet",
+      "bundleIdentifier": "com.HomeCare.Alertwet",
       "buildNumber": "12",
       "runtimeVersion": {
         "policy": "appVersion"
@@ -27,7 +27,7 @@
         "foregroundImage": "./assets/AlertWet-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.anonymous.AlertWet",
+      "package": "com.HomeCare.Alertwet",
       "googleServicesFile": "./google-services.json",
       "versionCode": 12,
       "runtimeVersion": "1.1.2"
