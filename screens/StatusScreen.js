@@ -91,12 +91,30 @@ const StatusScreen = ({ navigation }) => {
         return { color: 'green' };
       case 'Damp':
         return { color: 'orange' };
+      case 'Damp+':
+        return { color: 'darkorange' }; // Darker orange for "Damp+"
+      case 'Damp-':
+        return { color: 'sandybrown' }; // Lighter orange for "Damp-"
       case 'Wet':
         return { color: 'purple' };
+      case 'Wet+':
+        return { color: 'darkviolet' }; // Darker purple for "Wet+"
+      case 'Wet-':
+        return { color: 'mediumpurple' }; // Lighter purple for "Wet-"
+      case 'Wetter':
+        return { color: 'navy' }; // Base color for "Wetter"
+      case 'Wetter-':
+        return { color: 'royalblue' }; // Lighter shade for "Wetter-"
+      case 'Wetter+':
+        return { color: 'midnightblue' }; // Darker shade for "Wetter+"
       case 'Soaked':
         return { color: 'red' };
+      case 'Soaked+':
+        return { color: 'darkred' }; // Darker red for "Soaked+"
+      case 'Soaked-':
+        return { color: 'lightcoral' }; // Lighter red for "Soaked-"
       default:
-        return { color: 'black' }; // Default color
+        return { color: 'black' }; // Default color for undefined statuses
     }
   };
   

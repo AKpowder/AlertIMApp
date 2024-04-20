@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { View, TextInput, Button, StyleSheet, ScrollView, Alert, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, TextInput, Button, StyleSheet, ScrollView, Alert, KeyboardAvoidingView, Platform, TouchableOpacity, Text } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 import { fetchUserAttributes, updateUserAttributes, getCurrentUser } from 'aws-amplify/auth';
 import LogoComponent from '../Components/LogoComponent';
 
@@ -13,6 +14,35 @@ const ProfileScreen = ({ navigation }) => {
     const [clipNumbers, setClipNumbers] = useState(['']);
     const [phoneToken, setPhoneToken] = useState(['']);
     const [userName, setUserName] = useState(['']);
+
+    const [hasChanges, setHasChanges] = useState(false);
+
+    useFocusEffect(
+        React.useCallback(() => {
+          const onBackPress = () => {
+            if (hasChanges) {
+              Alert.alert(
+                "Unsaved Changes",
+                "You have unsaved changes. Do you want to save them?",
+                [
+                  { text: "No", style: "cancel", onPress: () => navigation.goBack() },
+                  { text: "Yes", onPress: () => { handleUpdateProfile(); navigation.goBack(); } }
+                ],
+                { cancelable: false }
+              );
+              return true; // Prevent default behavior of going back
+            }
+            return false;
+          };
+      
+          // Add 'beforeRemove' event listener
+          const unsubscribe = navigation.addListener('beforeRemove', onBackPress);
+      
+          // Return the function to unsubscribe from the event so it gets removed on unmount
+          return unsubscribe;
+        }, [hasChanges, navigation, handleUpdateProfile])
+    );
+      
 
     useEffect(() => {
         const fetchUserProfile = async () => {
@@ -103,9 +133,15 @@ const ProfileScreen = ({ navigation }) => {
     const addClipNumber = () => {
         if (clipNumbers.length < 5) {
             setClipNumbers([...clipNumbers, '']);
+            setHasChanges(true);
         } else {
             Alert.alert('Limit reached', 'You can only add up to 5 clip numbers.');
         }
+    };
+    const deleteClipNumber = (index) => {
+        const newClipNumbers = clipNumbers.filter((_, i) => i !== index);
+        setClipNumbers(newClipNumbers);
+        setHasChanges(true);
     };
 
     return (
@@ -123,26 +159,34 @@ const ProfileScreen = ({ navigation }) => {
                     <TextInput value={phoneNumber} onChangeText={setPhoneNumber} placeholder="Phone Number" keyboardType="phone-pad" style={styles.input} />
                     <TextInput value={address} onChangeText={setAddress} placeholder="Address" style={styles.input} />
                     {clipNumbers.map((clipNumber, index) => (
-                        <TextInput
-                            key={index}
+                        <View key={index} style={styles.clipNumberContainer}>
+                            <TextInput
                             value={clipNumber}
                             onChangeText={(text) => handleClipNumberChange(text, index)}
                             placeholder="Clip Number"
                             keyboardType="numeric"
                             maxLength={4}
                             style={styles.input}
-                        />
+                            />
+                            <View style={styles.buttonWrapper}>
+                            <Button
+                                title="Remove Clip"
+                                onPress={() => deleteClipNumber(index)}
+                            />
+                            </View>
+                        </View>
                     ))}
                     <Button title="Add another Clip Number" onPress={addClipNumber} />
                     <View style={styles.buttonContainer}>
                         <Button title="Update Profile" onPress={handleUpdateProfile} />
                     </View>
                     <View style={styles.deleteButtonContainer}>
-                        <Button
-                            title="Delete Account"
-                            onPress={() => navigation.navigate('DeleteAccountScreen')}
-                            color="#FFFFFF" // Use a distinct color to indicate caution
-                        />
+                        <TouchableOpacity
+                        onPress={() => navigation.navigate('DeleteAccountScreen')}
+                        style={styles.deleteAccountButton}
+                        >
+                        <Text style={styles.deleteAccountButtonText}>Delete Account</Text>
+                        </TouchableOpacity>
                     </View>
 
                 </View>
@@ -158,6 +202,11 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         padding: 20,
     },
+    buttonContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginVertical: 10,
+      },
     input: {
         width: '100%', 
         marginBottom: 15, 
@@ -169,15 +218,30 @@ const styles = StyleSheet.create({
     nonEditableInput: {
         backgroundColor: '#f3f3f3',
     },
-    buttonContainer: {
-        width: '75%',
-        marginVertical: 10,
-    },
     deleteButtonContainer: {
         marginTop: 20,
-        width: '50%',
-        backgroundColor: '#FF6347', // Optional: Further emphasize the button with background color
-      }
+        width: '50%', // Adjust the width as needed
+        alignSelf: 'center', // Ensures it centers in the parent view
+    },
+    deleteAccountButton: {
+        backgroundColor: '#FF6347',
+        padding: 5,
+        borderRadius: 5, // Rounded corners
+        justifyContent: 'center', // Center the text vertically
+        alignItems: 'center', // Center the text horizontally
+    },
+    deleteAccountButtonText: {
+        color: '#FFFFFF', // White text
+        fontSize: 16, // Adjust the size as needed
+    },
+    clipNumberContainer: {
+        marginBottom: 15,
+        width: '100%'
+    },
+    buttonWrapper: {
+        width: '100%', // Ensures the button stretches to the width of the container
+      },
+    
 });
 
 export default ProfileScreen;
