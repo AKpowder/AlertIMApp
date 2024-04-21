@@ -2,7 +2,7 @@
   "expo": {
     "name": "AlertWet",
     "slug": "alertwet",
-    "version": "1.1.3",
+    "version": "1.1.4",
     "orientation": "portrait",
     "icon": "./assets/AlertWet-icon.png",
     "userInterfaceStyle": "light",
@@ -17,7 +17,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.anonymous.AlertWet",
-      "buildNumber": "13",
+      "buildNumber": "14",
       "runtimeVersion": {
         "policy": "appVersion"
       }
@@ -29,8 +29,8 @@
       },
       "package": "com.HomeCare.Alertwet",
       "googleServicesFile": "./google-services.json",
-      "versionCode": 13,
-      "runtimeVersion": "1.1.3"
+      "versionCode": 14,
+      "runtimeVersion": "1.1.4"
     },
     "web": {
       "favicon": "./assets/favicon.png"
