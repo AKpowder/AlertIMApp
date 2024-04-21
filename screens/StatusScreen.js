@@ -81,42 +81,33 @@ const StatusScreen = ({ navigation }) => {
     }
   };
 
+  const statusExamples = [
+    'Conn', 'DisConn', 'Dry', 'Damp', 'Damp+', 'Damp-', 'Wet', 'Wet+', 'Wet-', 
+    'Wetter', 'Wetter-', 'Wetter+', 'Soaked', 'Soaked+', 'Soaked-'
+  ];
+
   const getStatusColor = (status) => {
     switch (status) {
-      case 'Conn':
-        return { color: 'blue' };
-      case 'DisConn':
-        return { color: 'grey' };
-      case 'Dry':
-        return { color: 'green' };
-      case 'Damp':
-        return { color: 'orange' };
-      case 'Damp+':
-        return { color: 'darkorange' }; // Darker orange for "Damp+"
-      case 'Damp-':
-        return { color: 'sandybrown' }; // Lighter orange for "Damp-"
-      case 'Wet':
-        return { color: 'purple' };
-      case 'Wet+':
-        return { color: 'darkviolet' }; // Darker purple for "Wet+"
-      case 'Wet-':
-        return { color: 'mediumpurple' }; // Lighter purple for "Wet-"
-      case 'Wetter':
-        return { color: 'navy' }; // Base color for "Wetter"
-      case 'Wetter-':
-        return { color: 'royalblue' }; // Lighter shade for "Wetter-"
-      case 'Wetter+':
-        return { color: 'midnightblue' }; // Darker shade for "Wetter+"
-      case 'Soaked':
-        return { color: 'red' };
-      case 'Soaked+':
-        return { color: 'darkred' }; // Darker red for "Soaked+"
-      case 'Soaked-':
-        return { color: 'lightcoral' }; // Lighter red for "Soaked-"
-      default:
-        return { color: 'black' }; // Default color for undefined statuses
+      case 'Conn': return { color: '#00B050', fontWeight: 'bold', fontSize: 16 };
+      case 'DisConn': return { color: '#663300', fontWeight: 'bold', fontSize: 16 };
+      case 'Dry': return { color: '#196B24', fontWeight: 'bold', fontSize: 16 };
+      case 'Damp-': return { color: '#4E95D9', fontWeight: 'bold', fontSize: 16 };
+      case 'Damp': return { color: '#215F9A', fontWeight: 'bold', fontSize: 16 };
+      case 'Damp+': return { color: '#143A60', fontWeight: 'bold', fontSize: 16 };
+      case 'Wet-': return { color: '#B888DC', fontWeight: 'bold', fontSize: 16 };
+      case 'Wet': return { color: '#A162D0', fontWeight: 'bold', fontSize: 16 };
+      case 'Wet+': return { color: '#7030A0', fontWeight: 'bold', fontSize: 16 };
+      case 'Wetter-': return { color: '#ED8855', fontWeight: 'bold', fontSize: 16 };
+      case 'Wetter': return { color: '#E65D18', fontWeight: 'bold', fontSize: 16 };
+      case 'Wetter+': return { color: '#C04F15', fontWeight: 'bold', fontSize: 16 };
+      case 'Soaked-': return { color: '#FF4F4F', fontWeight: 'bold', fontSize: 16 };
+      case 'Soaked': return { color: '#FF0000', fontWeight: 'bold', fontSize: 16 };
+      case 'Soaked+': return { color: '#C00000', fontWeight: 'bold', fontSize: 16 };
+      default: return { color: '#000000', fontWeight: 'bold', fontSize: 16 };
     }
   };
+  
+  
   
   
   

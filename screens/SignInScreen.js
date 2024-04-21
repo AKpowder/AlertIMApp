@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, Alert, StyleSheet } from 'react-native';
+import { View, TextInput, Button, Alert, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { signIn } from 'aws-amplify/auth';
 
 const SignInScreen = ({ navigation, route }) => {
   const [email, setEmail] = useState(route.params?.email || '');
   const [password, setPassword] = useState('');
+  const [passwordVisible, setPasswordVisible] = useState(false);
 
   async function handleSignIn() { 
     try {
@@ -34,20 +35,25 @@ const SignInScreen = ({ navigation, route }) => {
         value={password}
         onChangeText={setPassword}
         placeholder="Password"
-        autoCapitalize="none"
-        secureTextEntry
+        secureTextEntry={!passwordVisible}
         style={styles.input}
       />
+      <TouchableOpacity
+        onPress={() => setPasswordVisible(!passwordVisible)}
+        style={styles.toggle}
+      >
+        <Text style={styles.showButtonText}>{passwordVisible ? 'Hide' : 'Show'}</Text>
+      </TouchableOpacity>
       <View style={styles.buttonContainer}>
-        <Button
-          title="Sign In"
-          onPress={handleSignIn}
-        />
+        <Button title="Sign In" onPress={handleSignIn} />
+      </View>
+      <View style={styles.buttonContainer}>
+        <Button title="Sign Up" onPress={() => navigation.navigate('SignUpScreen')} />
       </View>
       <View style={styles.buttonContainer}>
         <Button
-          title="Sign Up"
-          onPress={() => navigation.navigate('SignUpScreen')}
+          title="Forgot Password?"
+          onPress={() => navigation.navigate('ForgotPasswordScreen')}
         />
       </View>
     </View>
@@ -59,19 +65,27 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 20, 
+    padding: 20,
   },
   input: {
-    width: '100%', 
-    marginBottom: 15, 
-    borderWidth: 1, 
-    borderColor: '#ccc', 
-    borderRadius: 5, 
-    padding: 10, 
+    width: '100%',
+    marginBottom: 15,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    padding: 10,
   },
   buttonContainer: {
     width: '75%',
     marginVertical: 10,
+  },
+  toggle: {
+    alignSelf: 'flex-start',
+    marginBottom: 15,
+  },
+  showButtonText: {
+    color: '#007AFF', // Apply blue color
+    fontSize: 12,     // Apply smaller font size
   },
 });
 

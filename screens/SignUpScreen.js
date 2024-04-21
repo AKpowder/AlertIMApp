@@ -385,7 +385,7 @@ const styles = StyleSheet.create({
   },
   showButtonText: {
     color: '#007AFF',
-    fontSize: 11,
+    fontSize: 12,
   },
   errorInput: {
     borderColor: 'red', // Use a color that indicates an error
