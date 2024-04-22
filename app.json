@@ -4,10 +4,10 @@
     "slug": "alertwet",
     "version": "1.1.4",
     "orientation": "portrait",
-    "icon": "./assets/AlertWet-icon.png",
+    "icon": "./assets/AlertWet-icon-foreground.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/AlertWet-icon.png",
+      "image": "./assets/AlertWet-icon-foreground.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -24,8 +24,8 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/AlertWet-icon.png",
-        "backgroundColor": "#ffffff"
+        "foregroundImage": "./assets/AlertWet-icon-foreground.png",
+        "backgroundImage": "./assets/AlertWet-icon-background.png"
       },
       "package": "com.HomeCare.Alertwet",
       "googleServicesFile": "./google-services.json",
