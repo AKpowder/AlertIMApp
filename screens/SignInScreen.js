@@ -37,6 +37,7 @@ const SignInScreen = ({ navigation, route }) => {
         placeholder="Password"
         secureTextEntry={!passwordVisible}
         style={styles.input}
+        autoCapitalize="none"
       />
       <TouchableOpacity
         onPress={() => setPasswordVisible(!passwordVisible)}
