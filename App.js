@@ -16,20 +16,25 @@ import StatusScreen from './screens/StatusScreen';
 import SetupScreen from './screens/SetupScreen';
 import DeleteAccountScreen from './screens/DeleteAccountScreen.js';
 
+import LoadingLogo from './Components/LoadingLogo';
+
 import { Amplify } from 'aws-amplify';
 import awsmobile from './src/aws-exports.js';
 import { Alert } from 'react-native';
+
+import withLoadingScreen from './Components/withLoadingScreen'; // Import the HOC
 
 Amplify.configure(awsmobile);
 
 const Stack = createStackNavigator();
 
 function App() {
-
+  
   const navigationRef = useRef(); // Create the ref for the navigation container
 
 
   useEffect(() => {
+
     // Listener for notifications received while the app is in the foreground
     const foregroundSubscription = Notifications.addNotificationReceivedListener(notification => {
       console.log('Notification received in foreground:', notification);
@@ -67,17 +72,17 @@ function App() {
   return (
     <NavigationContainer ref={navigationRef}>
       <Stack.Navigator>
-        <Stack.Screen name="LandingScreen" component={LandingScreen} options={{ title: 'AlertWet', headerTitleAlign: 'center' }} />
-        <Stack.Screen name="HomeScreen" component={HomeScreen} options={{ title: 'AlertWet', headerTitleAlign: 'center' }} />
-        <Stack.Screen name="SignUpScreen" component={SignUpScreen} options={{ title: 'Sign Up' }} />
-        <Stack.Screen name="SignInScreen" component={SignInScreen} options={{ title: 'Sign In' }} />
-        <Stack.Screen name="ConfirmationScreen" component={ConfirmationScreen} options={{ title: 'Confirm Sign Up' }} />
-        <Stack.Screen name="NotificationTest" component={NotificationTestScreen} options={{ title: 'Test Notifications' }} />
-        <Stack.Screen name="ProfileScreen" component={ProfileScreen} options={{ title: 'Profile' }} />
-        <Stack.Screen name="ChangeEmailScreen" component={ChangeEmailScreen} options={{ title: 'Change Email' }} />
-        <Stack.Screen name="StatusScreen" component={StatusScreen} options={{ title: 'AlertPad Status' }} />
-        <Stack.Screen name="SetupScreen" component={SetupScreen} options={{ title: 'Setup Gateway' }} />
-        <Stack.Screen name="DeleteAccountScreen" component={DeleteAccountScreen} options={{ title: 'Profile' }} />
+        <Stack.Screen name="LandingScreen" component={withLoadingScreen(LandingScreen)} options={{ title: 'AlertWet', headerTitleAlign: 'center' }} />
+        <Stack.Screen name="HomeScreen" component={withLoadingScreen(HomeScreen)} options={{ title: 'AlertWet', headerTitleAlign: 'center' }} />
+        <Stack.Screen name="SignUpScreen" component={withLoadingScreen(SignUpScreen)} options={{ title: 'Sign Up' }} />
+        <Stack.Screen name="SignInScreen" component={withLoadingScreen(SignInScreen)} options={{ title: 'Sign In' }} />
+        <Stack.Screen name="ConfirmationScreen" component={withLoadingScreen(ConfirmationScreen)} options={{ title: 'Confirm Sign Up' }} />
+        <Stack.Screen name="NotificationTest" component={withLoadingScreen(NotificationTestScreen)} options={{ title: 'Test Notifications' }} />
+        <Stack.Screen name="ProfileScreen" component={withLoadingScreen(ProfileScreen)} options={{ title: 'Profile' }} />
+        <Stack.Screen name="ChangeEmailScreen" component={withLoadingScreen(ChangeEmailScreen)} options={{ title: 'Change Email' }} />
+        <Stack.Screen name="StatusScreen" component={withLoadingScreen(StatusScreen)} options={{ title: 'AlertPad Status' }} />
+        <Stack.Screen name="SetupScreen" component={withLoadingScreen(SetupScreen)} options={{ title: 'Setup Gateway' }} />
+        <Stack.Screen name="DeleteAccountScreen" component={withLoadingScreen(DeleteAccountScreen)} options={{ title: 'Profile' }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
